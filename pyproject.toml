@@ -1,0 +1,44 @@
+[project]
+name = "repo-digest"
+version = "0.1.0"
+description = "Turn a GitHub repo's history into readable release notes using Claude."
+readme = "README.md"
+authors = [
+    { name = "Ben Grisdale", email = "ben@grisdale.co.nz" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "anthropic>=2.1.0",
+    "fastapi>=0.161.1",
+    "httpx>=0.28.1",
+    "pydantic>=2.14.1",
+    "python-dotenv>=1.2.4",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[project.scripts]
+repo-digest = "repo_digest:main"
+
+[build-system]
+requires = ["uv_build>=0.13.5,<0.14.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.0",
+    "pytest>=9.1.1",
+    "respx>=0.23.1",
+    "ruff>=0.17.2",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.mypy]
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
