@@ -6,7 +6,7 @@ Turn a GitHub repository's history into readable release notes: features, fixes 
 
 ## Plan
 
-- [ ] **1. GitHub client:** parse repo input, fetch commits for a date range (`src/repo_digest/github.py`)
+- [x] **1. GitHub client:** parse repo input, fetch commits for a date range (`src/repo_digest/github.py`)
 - [ ] **2. Summariser:** commits → structured release notes with Claude + Pydantic, plus validation and retries
 - [ ] **3. CLI:** `repo-digest owner/repo --since 2026-09-01` prints Markdown
 - [ ] **4. Web API + page:** FastAPI endpoint and a simple front end
