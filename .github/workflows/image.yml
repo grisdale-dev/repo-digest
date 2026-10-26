@@ -1,0 +1,40 @@
+name: Container image
+
+# Builds the image on every push and PR. On main, smoke-tests it and publishes it to
+# GitHub Container Registry (free for public images), where Azure Container Apps pulls it from.
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build
+        run: |
+          docker build \
+            --label org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }} \
+            -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" .
+
+      - name: Smoke test
+        run: |
+          docker run -d --name app -p 8000:8000 -e LLM_API_KEY=dummy "$IMAGE:${{ github.sha }}"
+          for i in $(seq 1 20); do curl -fsS localhost:8000/healthz && break; sleep 1; done
+          curl -fsS localhost:8000/ | grep -q "repo-digest"
+          docker logs app
+
+      - name: Publish
+        if: github.event_name == 'push'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          docker push "$IMAGE:${{ github.sha }}"
+          docker push "$IMAGE:latest"
