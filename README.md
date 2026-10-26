@@ -1,13 +1,13 @@
 # repo-digest
 
-Turn a GitHub repository's history into readable release notes: features, fixes and breaking changes, written by Claude.
+Turn a GitHub repository's history into readable release notes: features, fixes and breaking changes, written by an LLM (DeepSeek by default; any OpenAI-compatible provider works).
 
 > 🚧 Work in progress. This is my first Python project and part of my [move into AI engineering](https://github.com/grisdale-dev). The commit history shows the learning as it happened.
 
 ## Plan
 
 - [x] **1. GitHub client:** parse repo input, fetch commits for a date range (`src/repo_digest/github.py`)
-- [ ] **2. Summariser:** commits → structured release notes with Claude + Pydantic, plus validation and retries
+- [x] **2. Summariser:** commits → structured release notes with an LLM + Pydantic, plus validation and retries
 - [ ] **3. CLI:** `repo-digest owner/repo --since 2026-09-01` prints Markdown
 - [ ] **4. Web API + page:** FastAPI endpoint and a simple front end
 - [ ] **5. Guardrails:** per-visitor rate limit, result cache, daily token budget
@@ -25,5 +25,5 @@ cp .env.example .env    # then fill in your keys (never commit .env)
 uv run pytest           # tests
 uv run ruff check       # lint
 uv run ruff format      # format
-uv run mypy src         # type-check (strict)
+uv run mypy src tests   # type-check (strict)
 ```
