@@ -2,6 +2,8 @@
 
 Turn a GitHub repository's history into readable release notes: features, fixes and breaking changes, written by an LLM (DeepSeek by default; any OpenAI-compatible provider works).
 
+**Try it: https://repo-digest.greenmeadow-8bea4d3b.newzealandnorth.azurecontainerapps.io**
+
 > 🚧 Work in progress. This is my first Python project and part of my [move into AI engineering](https://github.com/grisdale-dev). The commit history shows the learning as it happened.
 
 ## Plan
@@ -11,7 +13,7 @@ Turn a GitHub repository's history into readable release notes: features, fixes 
 - [x] **3. CLI:** `repo-digest owner/repo --since 2026-09-01` prints Markdown
 - [x] **4. Web API + page:** FastAPI endpoint and a simple front end
 - [x] **5. Guardrails:** per-visitor rate limit, result cache, daily token budget
-- [ ] **6. Deploy:** live public URL
+- [x] **6. Deploy:** live public URL
 - [ ] **7. Evaluate:** compare against real human-written release notes for a few projects
 - [ ] **8. Publish:** PyPI package and write-up
 
@@ -58,3 +60,16 @@ uv run ruff check       # lint
 uv run ruff format      # format
 uv run mypy src tests   # type-check (strict)
 ```
+
+## Deployment
+
+Runs on **Azure Container Apps** (New Zealand North): one replica at most (the guards are in-memory), scales to zero when idle, logs off. The image is built and smoke-tested by GitHub Actions and published to GitHub Container Registry, so no Azure Container Registry is needed.
+
+Deploy a new version (after the "Container image" workflow has published it):
+
+```sh
+az containerapp update -n repo-digest -g rg-repo-digest --image ghcr.io/grisdale-dev/repo-digest:<commit-sha>
+```
+
+Secrets are set on the container app (`az containerapp secret set`) and referenced from env vars, never baked into the image.
+
