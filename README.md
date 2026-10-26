@@ -75,7 +75,7 @@ Runs on **Azure Container Apps** (New Zealand North): one replica at most (the g
 Deploy a new version (after the "Container image" workflow has published it):
 
 ```sh
-az containerapp update -n repo-digest -g rg-repo-digest --image ghcr.io/grisdale-dev/repo-digest:<commit-sha>
+az containerapp update --subscription "Azure for Students" -n repo-digest -g rg-repo-digest --image ghcr.io/grisdale-dev/repo-digest:<commit-sha>
 ```
 
 Secrets are set on the container app (`az containerapp secret set`) and referenced from env vars, never baked into the image.
