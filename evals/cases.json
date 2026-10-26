@@ -1,0 +1,9 @@
+[
+  {"name": "uv", "repo": "astral-sh/uv", "base": "0.13.4", "head": "0.13.5"},
+  {"name": "ruff", "repo": "astral-sh/ruff", "base": "0.17.1", "head": "0.17.2"},
+  {"name": "fastapi", "repo": "fastapi/fastapi", "base": "0.159.0", "head": "0.160.0"},
+  {"name": "httpx", "repo": "encode/httpx", "base": "0.27.2", "head": "0.28.0"},
+  {"name": "flask", "repo": "pallets/flask", "base": "3.0.3", "head": "3.1.0"},
+  {"name": "requests", "repo": "psf/requests", "base": "v2.33.1", "head": "v2.34.0"},
+  {"name": "rich", "repo": "Textualize/rich", "base": "v14.3.4", "head": "v15.0.0"}
+]

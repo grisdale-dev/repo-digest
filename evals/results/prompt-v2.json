@@ -1,0 +1,4777 @@
+{
+  "label": "prompt-v2",
+  "model": "deepseek-flash",
+  "judge_model": "deepseek-flash",
+  "repeat": 3,
+  "cases": [
+    {
+      "run": 1,
+      "name": "uv",
+      "repo": "astral-sh/uv",
+      "base": "0.13.4",
+      "head": "0.13.5",
+      "commits": 42,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 4.2,
+      "tokens": 4902,
+      "judge_tokens": 8319,
+      "recall": 0.7307692307692307,
+      "accuracy": 1.0,
+      "entries": 13,
+      "shas_cited": 17,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds wheel variant support with PEP 850 provider parsing and ranking, improves resolver memory use via PubGrub checkpoints, and updates managed Python builds to 3.15.1, 3.14.9, and 3.13.17.",
+        "breaking": [
+          {
+            "description": "Docker images for end-of-life Python 3.9 and 3.10 are no longer updated.",
+            "commits": [
+              "dce159b"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Wheel variant selection with `wheel-variants` enabled, preferring wheels whose variant requires no properties over ordinary wheels.",
+            "commits": [
+              "1cd91fd"
+            ]
+          },
+          {
+            "description": "Compatible wheel variants are ranked according to PEP 825 using namespace priorities and ordered feature and value preferences, with variant labels breaking ties.",
+            "commits": [
+              "d7f2827"
+            ]
+          },
+          {
+            "description": "PEP 850 variant provider declarations in wheel variant metadata are parsed and validated.",
+            "commits": [
+              "8b4b2d8"
+            ]
+          },
+          {
+            "description": "Static wheel variant providers are supported.",
+            "commits": [
+              "79422c8"
+            ]
+          },
+          {
+            "description": "Managed Python metadata updated to include Python 3.15.1, 3.14.9, and 3.13.17.",
+            "commits": [
+              "a02d446",
+              "3d82a6a"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Platform markers are now inferred from Android wheel tags during resolution.",
+            "commits": [
+              "e3810e1"
+            ]
+          },
+          {
+            "description": "Fixed the `uv export` slowdown while retaining correct activation of transitive extras.",
+            "commits": [
+              "2b50cbc"
+            ]
+          },
+          {
+            "description": "Incompatible self-dependencies are reported directly instead of displaying an empty version range in resolution errors.",
+            "commits": [
+              "c197284"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Resolver memory use reduced by sharing PubGrub checkpoints across pending forks, deferring cloning of resolver state, and merging completed forks incrementally.",
+            "commits": [
+              "d3524d2",
+              "384d963",
+              "cd77194"
+            ]
+          },
+          {
+            "description": "Reverted the python-build-standalone release sync to `20261013` while an intermittent `SIGBUS` crash during profiling is investigated.",
+            "commits": [
+              "7ad9a5c"
+            ]
+          },
+          {
+            "description": "Updated rustls-webpki and release tooling in response to the eMudhra intermediate CA incident.",
+            "commits": [
+              "4053abe",
+              "5477928"
+            ]
+          },
+          {
+            "description": "Python version ranges are now formatted in uv itself, removing the need for the astral-version-ranges fork.",
+            "commits": [
+              "7d68222"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Update managed CPython builds to python-build-standalone 20261021 with pip 26.2.2 and certifi 2026.10.19",
+            "coverage": "partial",
+            "commit": "a02d446"
+          },
+          {
+            "text": "Add CPython 3.15.1, 3.14.9, and 3.13.17",
+            "coverage": "full",
+            "commit": "a02d446"
+          },
+          {
+            "text": "Report incompatible self-dependencies directly in resolution errors",
+            "coverage": "full",
+            "commit": "c197284"
+          },
+          {
+            "text": "Select and rank wheel variants with no required properties or PEP 850 static providers in platform-specific resolutions",
+            "coverage": "full",
+            "commit": "1cd91fd"
+          },
+          {
+            "text": "Reduce peak memory use when resolving dependencies across multiple environments",
+            "coverage": "full",
+            "commit": "d3524d2"
+          },
+          {
+            "text": "Speed up exports with complex transitive extras by resolving activation across the dependency graph",
+            "coverage": "full",
+            "commit": "2b50cbc"
+          },
+          {
+            "text": "Reduce uv's binary size by keeping additional error formatters out of line",
+            "coverage": "missed",
+            "commit": "547751f"
+          },
+          {
+            "text": "Reduce overhead when parsing custom build cache keys",
+            "coverage": "missed",
+            "commit": "2668949"
+          },
+          {
+            "text": "Lock packages distributed only as Android wheels without a source distribution",
+            "coverage": "full",
+            "commit": "e3810e1"
+          },
+          {
+            "text": "Export optional dependencies correctly when transitive extras are activated through different or incompatible environment paths",
+            "coverage": "full",
+            "commit": "2b50cbc"
+          },
+          {
+            "text": "Reject invalid custom build cache keys instead of silently falling back to defaults",
+            "coverage": "missed",
+            "commit": "2668949"
+          },
+          {
+            "text": "Reject certificate chains containing compromised eMudhra intermediate keys via rustls-webpki 0.103.16",
+            "coverage": "full",
+            "commit": "4053abe"
+          },
+          {
+            "text": "Stop publishing uv Docker images based on Python 3.9 and 3.10",
+            "coverage": "full",
+            "commit": "dce159b"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "uv",
+      "repo": "astral-sh/uv",
+      "base": "0.13.4",
+      "head": "0.13.5",
+      "commits": 42,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 3.8,
+      "tokens": 4860,
+      "judge_tokens": 8306,
+      "recall": 0.6538461538461539,
+      "accuracy": 1.0,
+      "entries": 13,
+      "shas_cited": 13,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds ranking and selection of compatible wheel variants, improves resolver memory use through incremental fork processing, fixes Android wheel platform markers and `uv export` extra activation, and updates managed Python builds.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Compatible wheel variants are now ranked according to PEP 825, using namespace priorities and ordered feature and value preferences, with variant labels breaking ties.",
+            "commits": [
+              "d7f2827"
+            ]
+          },
+          {
+            "description": "With `wheel-variants` enabled, wheels whose variant requires no properties are selected and preferred over ordinary wheels after checking platform tags and hashes.",
+            "commits": [
+              "1cd91fd"
+            ]
+          },
+          {
+            "description": "PEP 850 variant provider declarations in wheel variant metadata are parsed and validated.",
+            "commits": [
+              "8b4b2d8"
+            ]
+          },
+          {
+            "description": "Static variant providers are supported for exercising variant ordering.",
+            "commits": [
+              "79422c8"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Platform markers are now inferred from Android wheel tags during resolution.",
+            "commits": [
+              "e3810e1"
+            ]
+          },
+          {
+            "description": "Fixed the `uv export` slowdown while retaining correct activation of transitive extras by resolving extra activation across the whole graph.",
+            "commits": [
+              "2b50cbc"
+            ]
+          },
+          {
+            "description": "Incompatible self-dependencies are now reported directly instead of displaying an empty version range in resolution errors.",
+            "commits": [
+              "c197284"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Resolver performance is improved by deferring cloning of solver state for pending forks, sharing a single checkpoint between siblings.",
+            "commits": [
+              "384d963"
+            ]
+          },
+          {
+            "description": "Resolver performance is improved by transferring one PubGrub incompatibility arena between resolution forks using checkpoints.",
+            "commits": [
+              "d3524d2"
+            ]
+          },
+          {
+            "description": "Completed resolution forks are now merged incrementally, releasing their pins and intermediate graph as resolution progresses.",
+            "commits": [
+              "cd77194"
+            ]
+          },
+          {
+            "description": "Managed Python metadata now includes Python 3.15.1, 3.14.9, and 3.13.17.",
+            "commits": [
+              "a02d446"
+            ]
+          },
+          {
+            "description": "The python-build-standalone release sync was reverted to 20261013 due to intermittent `SIGBUS` crashes during profiling.",
+            "commits": [
+              "7ad9a5c"
+            ]
+          },
+          {
+            "description": "Docker images for end-of-life Python 3.9 and 3.10 are no longer updated.",
+            "commits": [
+              "dce159b"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Update managed CPython builds to python-build-standalone 20261021 with pip 26.2.2 and certifi 2026.10.19",
+            "coverage": "partial",
+            "commit": "a02d446"
+          },
+          {
+            "text": "Report incompatible self-dependencies directly in resolution errors",
+            "coverage": "full",
+            "commit": "c197284"
+          },
+          {
+            "text": "Add CPython 3.15.1, 3.14.9, and 3.13.17",
+            "coverage": "full",
+            "commit": "a02d446"
+          },
+          {
+            "text": "Select and rank wheel variants with no required properties or PEP 850 static provider properties in platform-specific resolutions with wheel-variants",
+            "coverage": "full",
+            "commit": "1cd91fd"
+          },
+          {
+            "text": "Reduce peak memory use when resolving dependencies across multiple environments",
+            "coverage": "full",
+            "commit": "384d963"
+          },
+          {
+            "text": "Speed up exports with complex transitive extras by resolving activation across the dependency graph",
+            "coverage": "full",
+            "commit": "2b50cbc"
+          },
+          {
+            "text": "Reduce uv's binary size by keeping additional error formatters out of line",
+            "coverage": "missed",
+            "commit": "547751f"
+          },
+          {
+            "text": "Reduce overhead when parsing custom build cache keys",
+            "coverage": "missed",
+            "commit": "2668949"
+          },
+          {
+            "text": "Lock packages distributed only as Android wheels without a source distribution",
+            "coverage": "full",
+            "commit": "e3810e1"
+          },
+          {
+            "text": "Export optional dependencies correctly when transitive extras are activated through different or incompatible environment paths",
+            "coverage": "full",
+            "commit": "2b50cbc"
+          },
+          {
+            "text": "Reject invalid custom build cache keys instead of silently falling back to defaults",
+            "coverage": "missed",
+            "commit": "2668949"
+          },
+          {
+            "text": "Reject certificate chains containing compromised eMudhra intermediate keys via rustls-webpki 0.103.16",
+            "coverage": "missed",
+            "commit": "4053abe"
+          },
+          {
+            "text": "Stop publishing uv Docker images based on Python 3.9 and 3.10",
+            "coverage": "full",
+            "commit": "dce159b"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "uv",
+      "repo": "astral-sh/uv",
+      "base": "0.13.4",
+      "head": "0.13.5",
+      "commits": 42,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 4.5,
+      "tokens": 5055,
+      "judge_tokens": 8514,
+      "recall": 0.8461538461538461,
+      "accuracy": 1.0,
+      "entries": 17,
+      "shas_cited": 18,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds wheel variant support (PEP 825/850), speeds up resolution with incremental fork merging and deferred state cloning, infers platform markers from Android wheel tags, and drops EOL Python 3.9/3.10 Docker images.",
+        "breaking": [
+          {
+            "description": "Docker images for end-of-life Python 3.9 and 3.10 are no longer updated.",
+            "commits": [
+              "dce159b"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Wheel selection now prefers variants that require no properties, including the null variant, when `wheel-variants` is enabled.",
+            "commits": [
+              "1cd91fd"
+            ]
+          },
+          {
+            "description": "Compatible wheel variants are ranked per PEP 825 using namespace priorities and ordered feature and value preferences, with variant labels breaking ties.",
+            "commits": [
+              "d7f2827"
+            ]
+          },
+          {
+            "description": "PEP 850 provider declarations in wheel variant metadata are parsed and validated.",
+            "commits": [
+              "8b4b2d8"
+            ]
+          },
+          {
+            "description": "Support for static wheel variant providers.",
+            "commits": [
+              "79422c8"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed missing platform markers for Android wheels by inferring them from wheel tags.",
+            "commits": [
+              "e3810e1"
+            ]
+          },
+          {
+            "description": "Fixed a slowdown in `uv export` extra activation while keeping transitive extras correctly activated.",
+            "commits": [
+              "2b50cbc"
+            ]
+          },
+          {
+            "description": "Incompatible self-dependencies are now reported directly instead of showing an empty version range in resolution errors.",
+            "commits": [
+              "c197284"
+            ]
+          },
+          {
+            "description": "Restored managed Python metadata to the `20261013` python-build-standalone release after an intermittent `SIGBUS` crash with `20261020`.",
+            "commits": [
+              "7ad9a5c"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Resolution uses PubGrub checkpoints to reuse one incompatibility arena across forks instead of copying state.",
+            "commits": [
+              "d3524d2"
+            ]
+          },
+          {
+            "description": "Completed resolution forks are merged incrementally, releasing their pins and intermediate graphs as resolution progresses.",
+            "commits": [
+              "cd77194"
+            ]
+          },
+          {
+            "description": "Pending resolver forks share a checkpoint and clone their solver state only when they run, reducing peak memory.",
+            "commits": [
+              "384d963"
+            ]
+          },
+          {
+            "description": "PubGrub internals are accessed through dedicated methods rather than implementation details, using astral-pubgrub 0.7.0 and astral-version-ranges 0.2.3.",
+            "commits": [
+              "43001eb"
+            ]
+          },
+          {
+            "description": "Python version ranges are now formatted within uv itself, removing the dependency on the astral-version-ranges fork.",
+            "commits": [
+              "7d68222"
+            ]
+          },
+          {
+            "description": "Cache keys and Git patterns are now deserialized directly.",
+            "commits": [
+              "2668949"
+            ]
+          },
+          {
+            "description": "Updated to Python releases 3.15.1, 3.14.9, and 3.13.17.",
+            "commits": [
+              "a02d446",
+              "3d82a6a"
+            ]
+          },
+          {
+            "description": "Updated rustls-webpki following the eMudhra CA incident.",
+            "commits": [
+              "4053abe"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Update managed CPython builds to python-build-standalone 20261021 including 3.15.1, 3.14.9, 3.13.17 with pip 26.2.2 and certifi 2026.10.19",
+            "coverage": "partial",
+            "commit": "a02d446"
+          },
+          {
+            "text": "Report incompatible self-dependencies directly in resolution errors",
+            "coverage": "full",
+            "commit": "c197284"
+          },
+          {
+            "text": "Add CPython 3.15.1, 3.14.9, and 3.13.17",
+            "coverage": "full",
+            "commit": "a02d446"
+          },
+          {
+            "text": "Select and rank wheel variants with no required properties or PEP 850 static provider properties in platform-specific resolutions with wheel-variants",
+            "coverage": "full",
+            "commit": "1cd91fd"
+          },
+          {
+            "text": "Reduce peak memory use when resolving dependencies across multiple environments",
+            "coverage": "full",
+            "commit": "384d963"
+          },
+          {
+            "text": "Speed up exports with complex transitive extras by resolving activation across the dependency graph",
+            "coverage": "full",
+            "commit": "2b50cbc"
+          },
+          {
+            "text": "Reduce uv's binary size by keeping additional error formatters out of line",
+            "coverage": "missed",
+            "commit": "547751f"
+          },
+          {
+            "text": "Reduce overhead when parsing custom build cache keys",
+            "coverage": "full",
+            "commit": "2668949"
+          },
+          {
+            "text": "Lock packages distributed only as Android wheels without a source distribution",
+            "coverage": "full",
+            "commit": "e3810e1"
+          },
+          {
+            "text": "Export optional dependencies correctly when transitive extras are activated through different or incompatible environment paths",
+            "coverage": "full",
+            "commit": "2b50cbc"
+          },
+          {
+            "text": "Reject invalid custom build cache keys instead of silently falling back to defaults",
+            "coverage": "partial",
+            "commit": "2668949"
+          },
+          {
+            "text": "Reject certificate chains containing compromised eMudhra intermediate keys via rustls-webpki 0.103.16",
+            "coverage": "full",
+            "commit": "4053abe"
+          },
+          {
+            "text": "Stop publishing uv Docker images based on Python 3.9 and 3.10",
+            "coverage": "full",
+            "commit": "dce159b"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 14,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 15,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 16,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 17,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 1,
+      "name": "ruff",
+      "repo": "astral-sh/ruff",
+      "base": "0.17.1",
+      "head": "0.17.2",
+      "commits": 114,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 6.4,
+      "tokens": 12992,
+      "judge_tokens": 15854,
+      "recall": 0.75,
+      "accuracy": 1.0,
+      "entries": 20,
+      "shas_cited": 39,
+      "duplicate_shas": 0,
+      "long_entries": 2,
+      "notes": {
+        "summary": "Adds ty return-type inference behind a new `analysis.return-type-inference` option, a new preview lint rule, and several lint and type-checking fixes; most other changes are CI and dependency maintenance.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "ty adds return-type inference, disabled by default and enabled by setting `analysis.return-type-inference` to `\"always\"`.",
+            "commits": [
+              "b99f71a",
+              "068e06a"
+            ]
+          },
+          {
+            "description": "ty shows return-type inlay hints for unannotated functions, with a \"bake in\" action, and skips hints that contain stub-only types.",
+            "commits": [
+              "ceb9eea",
+              "f916ac2"
+            ]
+          },
+          {
+            "description": "The playground's default settings expose `analysis.return-type-inference`, set to `\"never\"`.",
+            "commits": [
+              "8d8252c"
+            ]
+          },
+          {
+            "description": "New preview lint rule `unnecessary-regular-expression-compile` flags `re.compile(p).match(s)`-style calls where the compiled pattern is only used in place.",
+            "commits": [
+              "47a28e3"
+            ]
+          },
+          {
+            "description": "`PLR2004` gains a configurable allowlist for magic values via `pylint.allow_magic_values`.",
+            "commits": [
+              "16bc1bc"
+            ]
+          },
+          {
+            "description": "ty supports uv's nested `modules[name].owners` module-ownership metadata alongside the legacy `module_owners` field.",
+            "commits": [
+              "d4a7c23"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "`PLE0643` no longer reports false positives when sequence literals contain starred elements.",
+            "commits": [
+              "1939846"
+            ]
+          },
+          {
+            "description": "`D417` now treats backslash-escaped `\\*args` and `\\*\\*kwargs` as documented parameters.",
+            "commits": [
+              "8ebb34e"
+            ]
+          },
+          {
+            "description": "The autofixes for `PLR5501` and `PLW0120` are now marked unsafe when they would delete a comment on the `else:` line.",
+            "commits": [
+              "8d122c1"
+            ]
+          },
+          {
+            "description": "The `UP035` autofix is now marked unsafe when the import contains comments that would be deleted.",
+            "commits": [
+              "8f19c4f"
+            ]
+          },
+          {
+            "description": "`UP040`, `UP046`, `UP047` and `RUF053` no longer emit syntax errors for type variables with starred constraints.",
+            "commits": [
+              "c4d0597"
+            ]
+          },
+          {
+            "description": "Several ty crashes and false positives are fixed, including stack overflows on recursive descriptor setter types and negated recursive aliases, a panic on negating `Any` aliases, false `invalid-argument-type` errors for copied recursive dictionaries and callbacks returning gradual generics, and incorrect inference from incompatible union members.",
+            "commits": [
+              "b0f9526",
+              "e372f18",
+              "77f2f1c",
+              "9e3ea63",
+              "7111ca7",
+              "48dcdd0",
+              "7610cd2"
+            ]
+          },
+          {
+            "description": "ty now reports incompatible attributes inherited from different bases as `invalid-attribute-override` and rejects `runtime_checkable` on non-protocol classes as `invalid-argument-type`.",
+            "commits": [
+              "0d562aa",
+              "ef6d36a"
+            ]
+          },
+          {
+            "description": "ty reports all missing `@override` decorators together instead of revealing them one at a time, and gives more accurate messages for read-only `TypedDict` keys on `del`, `pop` and `setdefault`.",
+            "commits": [
+              "ebdf39e",
+              "ffcebb7"
+            ]
+          },
+          {
+            "description": "ty preserves the read type of dynamic attributes after assignment and keeps runtime namespace fallbacks for partial stub packages.",
+            "commits": [
+              "02c0217",
+              "d2d9e8a"
+            ]
+          },
+          {
+            "description": "The documentation clarifies editor configuration precedence, user-level configuration discovery, rule descriptions and tutorial examples.",
+            "commits": [
+              "c23d696"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "The autofix descriptions for `UP040` and `UP047` no longer mention variance.",
+            "commits": [
+              "9cced9a"
+            ]
+          },
+          {
+            "description": "`stacker` is now an opt-in feature.",
+            "commits": [
+              "3e3f22d"
+            ]
+          },
+          {
+            "description": "The playground's locked dependencies `fflate`, `ws`, `picomatch`, `tar`, `source-map-js`, `smol-toml` and Monaco (with DOMPurify) were updated past known security advisories, and the playground API's Wrangler dependencies were updated.",
+            "commits": [
+              "84e3f4f",
+              "96c8d44",
+              "61104fc",
+              "b50b683",
+              "7e8a18d",
+              "9e9ad51",
+              "29c3a12",
+              "29057bd",
+              "355cda3"
+            ]
+          },
+          {
+            "description": "macOS releases now use the stable `sh.astral.ruff` code-signing identifier across architectures.",
+            "commits": [
+              "44a3df2"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Add preview rule unnecessary-regular-expression-compile",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Avoid syntax errors for type variables with starred constraints (UP040, UP046, UP047, RUF053)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "D417 treats backslash-escaped *args/**kwargs as documented",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "PLE0643 avoid false positive on starred elements",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "PLR5501/PLW0120 mark fixes unsafe when deleting comments",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "UP035 mark fix unsafe when deleting comments",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Avoid intermediate names in lint name resolution",
+            "coverage": "missed",
+            "commit": "2983c7c"
+          },
+          {
+            "text": "Prefilter bidirectional Unicode checks by UTF-8 leading bytes",
+            "coverage": "missed",
+            "commit": "6f8de53"
+          },
+          {
+            "text": "Share postfix parsing and reduce expression copies",
+            "coverage": "missed",
+            "commit": "85430a9"
+          },
+          {
+            "text": "PLR2004 configurable allowlist for magic values",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Clarify documentation and correct stale guidance",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Remove variance mentions from UP040/UP047 fix safety docs",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 14,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 15,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 16,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 17,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 18,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 19,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 20,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "ruff",
+      "repo": "astral-sh/ruff",
+      "base": "0.17.1",
+      "head": "0.17.2",
+      "commits": 114,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 8.5,
+      "tokens": 13522,
+      "judge_tokens": 16620,
+      "recall": 0.6666666666666666,
+      "accuracy": 1.0,
+      "entries": 39,
+      "shas_cited": 57,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds return type inference to ty (opt-in), a new preview rule `unnecessary-regular-expression-compile`, and a configurable allowlist for `magic-value-comparison`; includes numerous ty type-checking fixes and lint rule fix-safety improvements.",
+        "breaking": [
+          {
+            "description": "macOS releases now use the stable `sh.astral.ruff` code-signing identifier; rules tied to the unprefixed x86_64 identifier need a one-time update.",
+            "commits": [
+              "44a3df2"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "New `analysis.return-type-inference` option (disabled by default; set to `\"always\"` to enable) adds return type inference for unannotated functions in ty, also exposed in playground default settings.",
+            "commits": [
+              "b99f71a",
+              "068e06a",
+              "8d8252c",
+              "c64734b"
+            ]
+          },
+          {
+            "description": "Return-type inlay hints for unannotated functions, with the ability to 'bake in' inferred types.",
+            "commits": [
+              "ceb9eea"
+            ]
+          },
+          {
+            "description": "New preview rule `unnecessary-regular-expression-compile` flags patterns compiled only at the point of use.",
+            "commits": [
+              "47a28e3"
+            ]
+          },
+          {
+            "description": "New `pylint.allow_magic_values` setting lets users configure the allowlist for `magic-value-comparison` (`PLR2004`).",
+            "commits": [
+              "16bc1bc"
+            ]
+          },
+          {
+            "description": "ty now reports incompatible attributes inherited from different bases (`invalid-attribute-override`).",
+            "commits": [
+              "0d562aa"
+            ]
+          },
+          {
+            "description": "ty now reports `invalid-argument-type` when `runtime_checkable` is applied to a non-protocol class.",
+            "commits": [
+              "ef6d36a"
+            ]
+          },
+          {
+            "description": "ty validates `TypeAliasType` keyword arguments and recognizes the `qualname` parameter on Python 3.15+.",
+            "commits": [
+              "0a977a8"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed false `invalid-argument-type` when inferring constrained type variables from callbacks returning invariant generics with gradual type arguments.",
+            "commits": [
+              "48dcdd0"
+            ]
+          },
+          {
+            "description": "Fixed a stack overflow when checking a protocol's writable member whose descriptor setter accepts a recursive type.",
+            "commits": [
+              "b0f9526",
+              "e372f18"
+            ]
+          },
+          {
+            "description": "Fixed invalid `invalid-argument-type` when copying a dictionary whose value type contains a recursive `Callable[..., T]`, and prevented stack overflows when checking negated recursive aliases.",
+            "commits": [
+              "7111ca7",
+              "77f2f1c"
+            ]
+          },
+          {
+            "description": "Generalized types in inferred return types that refer to local nested definitions.",
+            "commits": [
+              "59a9e85"
+            ]
+          },
+          {
+            "description": "Avoided widening compatible generic return alternatives in call inference.",
+            "commits": [
+              "3bf4988"
+            ]
+          },
+          {
+            "description": "Fixed protocol method receiver compatibility checks and strict subtyping through gradual types.",
+            "commits": [
+              "477638f",
+              "217848d"
+            ]
+          },
+          {
+            "description": "Preserved `Self` when checking universal protocols that declare a writable `__class__`.",
+            "commits": [
+              "4fe2a2a"
+            ]
+          },
+          {
+            "description": "Improved `Self` type variable identities so methods from different classes don't collapse into a single callable.",
+            "commits": [
+              "5da3b41"
+            ]
+          },
+          {
+            "description": "Allowed subclasses to restore or disable hashability, validating `__hash__` signatures.",
+            "commits": [
+              "2b778ee"
+            ]
+          },
+          {
+            "description": "Preserved read types for dynamic attributes provided by `__getattr__` after assignment.",
+            "commits": [
+              "02c0217"
+            ]
+          },
+          {
+            "description": "Reported all missing `@override` decorators together instead of one at a time.",
+            "commits": [
+              "ebdf39e"
+            ]
+          },
+          {
+            "description": "Preserved runtime namespace fallback for modules missing from partial stub packages.",
+            "commits": [
+              "d2d9e8a"
+            ]
+          },
+          {
+            "description": "Supported uv's new nested module ownership metadata.",
+            "commits": [
+              "d4a7c23"
+            ]
+          },
+          {
+            "description": "Avoided suggesting inlay hints containing stub-only types.",
+            "commits": [
+              "f916ac2"
+            ]
+          },
+          {
+            "description": "Fixed incorrect messages for deleting, popping or defaulting read-only TypedDict items.",
+            "commits": [
+              "ffcebb7"
+            ]
+          },
+          {
+            "description": "Deferred constructor type variable defaults until after `__init__` is considered.",
+            "commits": [
+              "bbb5190"
+            ]
+          },
+          {
+            "description": "Filtered incompatible union members during union inference to avoid incorrect results.",
+            "commits": [
+              "7610cd2"
+            ]
+          },
+          {
+            "description": "Promoted tuple lengths based on outer element types, avoiding unwanted tuple-size promotion for tuples inside elements.",
+            "commits": [
+              "61888b1"
+            ]
+          },
+          {
+            "description": "Validated `Generic[...]` and `Protocol[...]` arguments directly.",
+            "commits": [
+              "345535c"
+            ]
+          },
+          {
+            "description": "Avoided panics when negating dynamic type aliases.",
+            "commits": [
+              "9e3ea63"
+            ]
+          },
+          {
+            "description": "`D417` now treats backslash-escaped `*args` and `**kwargs` as documented.",
+            "commits": [
+              "8ebb34e"
+            ]
+          },
+          {
+            "description": "Fixed false positive in `PLE0643` (`potential-index-error`) for sequence literals containing starred expressions.",
+            "commits": [
+              "1939846"
+            ]
+          },
+          {
+            "description": "Fixed syntax errors in fixes for type variables with starred constraints (`UP040`, `UP046`, `UP047`, `RUF053`).",
+            "commits": [
+              "c4d0597"
+            ]
+          },
+          {
+            "description": "`UP035`, `PLR5501` and `PLW0120` fixes are now marked unsafe when they would delete comments.",
+            "commits": [
+              "8f19c4f",
+              "8d122c1"
+            ]
+          },
+          {
+            "description": "ty avoids cancelling language server requests for unrelated file changes.",
+            "commits": [
+              "dfe1450"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Bumped version to 0.17.2.",
+            "commits": [
+              "30516b4"
+            ]
+          },
+          {
+            "description": "Removed stale variance mentions from `UP040` and `UP047` documentation.",
+            "commits": [
+              "9cced9a"
+            ]
+          },
+          {
+            "description": "Consolidated docstring rendering behind a single `Docstring::render` interface.",
+            "commits": [
+              "6f06c4a"
+            ]
+          },
+          {
+            "description": "Reverted the protocol interface member walk from #26996, which was merged by mistake.",
+            "commits": [
+              "3b412c3"
+            ]
+          },
+          {
+            "description": "Updated playground and documentation dependencies (including security updates to `fflate`, `ws`, `picomatch`, `tar`, `source-map-js`, `smol-toml`, Monaco and Wrangler).",
+            "commits": [
+              "84e3f4f",
+              "96c8d44",
+              "61104fc",
+              "b50b683",
+              "7e8a18d",
+              "9e9ad51",
+              "29057bd",
+              "29c3a12",
+              "355cda3"
+            ]
+          },
+          {
+            "description": "Updated the uv versions used in CI and the uv-lock hook after the eMudhra certificate incident, and updated Go, certifi, and shared release-signing actions.",
+            "commits": [
+              "f71f169",
+              "63b4236",
+              "e02754d",
+              "e296d6f"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Add preview rule unnecessary-regular-expression-compile",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Avoid syntax errors for type variables with starred constraints (UP040, UP046, UP047, RUF053)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "D417 treats backslash-escaped *args and **kwargs as documented",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "PLE0643 avoid false positive on starred elements",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "PLR5501 and PLW0120 fixes marked unsafe when deleting comments",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "UP035 fix marked unsafe when deleting comments",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Avoid intermediate names in lint name resolution",
+            "coverage": "missed",
+            "commit": "2983c7c"
+          },
+          {
+            "text": "Prefilter bidirectional Unicode checks by UTF-8 leading bytes",
+            "coverage": "missed",
+            "commit": "6f8de53"
+          },
+          {
+            "text": "Share postfix parsing and reduce expression copies",
+            "coverage": "missed",
+            "commit": "85430a9"
+          },
+          {
+            "text": "Add configurable allowlist for magic-value-comparison (PLR2004)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Clarify documentation and correct stale guidance",
+            "coverage": "missed",
+            "commit": "c23d696"
+          },
+          {
+            "text": "Remove variance mentions from UP040 and UP047 fix safety docs",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 14,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 15,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 16,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 17,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 18,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 19,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 20,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 21,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 22,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 23,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 24,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 25,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 26,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 27,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 28,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 29,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 30,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 31,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 32,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 33,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 34,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 35,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 36,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 37,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 38,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 39,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "ruff",
+      "repo": "astral-sh/ruff",
+      "base": "0.17.1",
+      "head": "0.17.2",
+      "commits": 114,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 10.0,
+      "tokens": 13860,
+      "judge_tokens": 16806,
+      "recall": 0.75,
+      "accuracy": 1.0,
+      "entries": 41,
+      "shas_cited": 51,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "This release adds return-type inference and return-type inlay hints to ty, a new preview rule `unnecessary-regular-expression-compile`, a configurable allowlist for `PLR2004`, and fixes several crashes and false positives across ty and the linter.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Return type inference for unannotated functions in ty, disabled by default; enable with `analysis.return-type-inference = \"always\"`.",
+            "commits": [
+              "b99f71a",
+              "068e06a"
+            ]
+          },
+          {
+            "description": "Return-type inlay hints for unannotated functions in ty's editor and playground integrations, including baking in the inferred type.",
+            "commits": [
+              "ceb9eea"
+            ]
+          },
+          {
+            "description": "`analysis.return-type-inference` is exposed in the playground's default settings, set to `\"never\"`.",
+            "commits": [
+              "8d8252c"
+            ]
+          },
+          {
+            "description": "New preview rule `unnecessary-regular-expression-compile` (`complexity`) flags `re.compile(p).match(s)`-style calls where the compiled pattern is only used once.",
+            "commits": [
+              "47a28e3"
+            ]
+          },
+          {
+            "description": "New `pylint.allow_magic_values` setting lets you configure the allowlist for `magic-value-comparison` (`PLR2004`).",
+            "commits": [
+              "16bc1bc"
+            ]
+          },
+          {
+            "description": "ty now reports incompatible attributes inherited from different bases (`invalid-attribute-override`), even when the subclass does not override them.",
+            "commits": [
+              "0d562aa"
+            ]
+          },
+          {
+            "description": "ty now reports `invalid-argument-type` when `runtime_checkable` is applied to a non-protocol class, including direct calls.",
+            "commits": [
+              "ef6d36a"
+            ]
+          },
+          {
+            "description": "ty reads uv's nested `modules[name].owners` module-ownership metadata in addition to the legacy `module_owners` field.",
+            "commits": [
+              "d4a7c23"
+            ]
+          },
+          {
+            "description": "ty reports all missing `@override` decorators for a property at once instead of one per run.",
+            "commits": [
+              "ebdf39e"
+            ]
+          },
+          {
+            "description": "ty allows subclasses to disable or restore hashability, validating each `__hash__` against `object.__hash__` or `None`.",
+            "commits": [
+              "2b778ee"
+            ]
+          },
+          {
+            "description": "ty validates `TypeAliasType` keyword arguments and recognizes the `qualname` parameter on Python 3.15+.",
+            "commits": [
+              "0a977a8"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed a false positive in `potential-index-error` (`PLE0643`) on sequences containing starred expressions.",
+            "commits": [
+              "1939846"
+            ]
+          },
+          {
+            "description": "`pydocstyle` `D417` now treats backslash-escaped `\\*args` and `\\*\\*kwargs` as documented.",
+            "commits": [
+              "8ebb34e"
+            ]
+          },
+          {
+            "description": "`PLR5501` and `PLW0120` fixes are now marked unsafe when they would delete a comment on the `else:` line.",
+            "commits": [
+              "8d122c1"
+            ]
+          },
+          {
+            "description": "`UP035` fixes are now marked unsafe when a comment inside the `from typing import (...)` statement would be deleted.",
+            "commits": [
+              "8f19c4f"
+            ]
+          },
+          {
+            "description": "`UP040`, `UP046`, `UP047` and `RUF053` fixes no longer produce syntax errors for type variables with starred constraints.",
+            "commits": [
+              "c4d0597"
+            ]
+          },
+          {
+            "description": "Fixed a stack overflow when checking recursive descriptor setter types and protocols with recursive writable members.",
+            "commits": [
+              "b0f9526",
+              "e372f18"
+            ]
+          },
+          {
+            "description": "Fixed crashes when negating recursive aliases and panic when negating dynamic (`Any`) aliases.",
+            "commits": [
+              "77f2f1c",
+              "9e3ea63"
+            ]
+          },
+          {
+            "description": "Fixed recursive type materialization, avoiding false `invalid-argument-type` errors for `dict(value)` and stack overflows on negated recursive aliases.",
+            "commits": [
+              "7111ca7"
+            ]
+          },
+          {
+            "description": "Fixed false `invalid-argument-type` errors when inferring constrained type variables from callbacks returning a gradual generic type.",
+            "commits": [
+              "48dcdd0"
+            ]
+          },
+          {
+            "description": "Fixed over-narrow inferred return types when a generic call has multiple valid solutions with invariant return types.",
+            "commits": [
+              "3bf4988"
+            ]
+          },
+          {
+            "description": "Fixed incorrect inference when incompatible union members contributed constraints during union assignability checks.",
+            "commits": [
+              "7610cd2"
+            ]
+          },
+          {
+            "description": "Fixed constructor inference so type variable defaults are not resolved before `__init__` has a chance to constrain them.",
+            "commits": [
+              "bbb5190"
+            ]
+          },
+          {
+            "description": "Fixed tuple-length promotion to consider only the outer element types, so tuples nested deeper no longer block it.",
+            "commits": [
+              "61888b1"
+            ]
+          },
+          {
+            "description": "Fixed a panic from clearing cached ASTs in more language server operations.",
+            "commits": [
+              "8b333ab"
+            ]
+          },
+          {
+            "description": "Fixed partial stub packages hiding runtime submodules; runtime namespace candidates are now preserved when resolving descendants.",
+            "commits": [
+              "d2d9e8a"
+            ]
+          },
+          {
+            "description": "Fixed protocol receiver compatibility checks incorrectly establishing strict subtyping through gradual types.",
+            "commits": [
+              "217848d"
+            ]
+          },
+          {
+            "description": "Fixed universal protocol checks to preserve receiver-specific `Self` requirements for writable `__class__`.",
+            "commits": [
+              "4fe2a2a"
+            ]
+          },
+          {
+            "description": "Fixed `Self` type variables in synthesized methods sharing a single identity, which could collapse unions of `_replace` methods from different named tuples.",
+            "commits": [
+              "5da3b41"
+            ]
+          },
+          {
+            "description": "Fixed union normalization performance by rejecting impossible generic intersection comparisons early.",
+            "commits": [
+              "5fd8518"
+            ]
+          },
+          {
+            "description": "Fixed read types for dynamic attributes after assignment, so narrowing to the right-hand side no longer rejects valid `__getattr__` access.",
+            "commits": [
+              "02c0217"
+            ]
+          },
+          {
+            "description": "Fixed `TypedDict` diagnostics to report read-only keys as the reason for rejecting `del`, `pop`, and `setdefault`.",
+            "commits": [
+              "ffcebb7"
+            ]
+          },
+          {
+            "description": "Fixed a stack overflow when a protocol's writable member has a descriptor setter accepting a recursive type.",
+            "commits": [
+              "6b579b3"
+            ]
+          },
+          {
+            "description": "Go-to-implementation textual prefilters were clarified and split into separate member-name and `class` keyword matchers.",
+            "commits": [
+              "5608bb1"
+            ]
+          },
+          {
+            "description": "Fixed stale configuration guidance in the documentation, including editor configuration precedence and user-level configuration discovery.",
+            "commits": [
+              "c23d696"
+            ]
+          },
+          {
+            "description": "Removed incorrect variance-related mentions from the `UP040` and `UP047` fix safety documentation.",
+            "commits": [
+              "9cced9a"
+            ]
+          },
+          {
+            "description": "Avoided inserting inlay hints that contain stub-only types such as `Unknown` from `ty_extensions`.",
+            "commits": [
+              "f916ac2"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "`stacker` is now an opt-in feature.",
+            "commits": [
+              "3e3f22d"
+            ]
+          },
+          {
+            "description": "Ruff's documentation publishing now uses Python 3.13.",
+            "commits": [
+              "b5b38fa"
+            ]
+          },
+          {
+            "description": "macOS releases now use the stable `sh.astral.ruff` code-signing identifier across architectures; rules tied to the unprefixed x86_64 identifier need a one-time update.",
+            "commits": [
+              "44a3df2"
+            ]
+          },
+          {
+            "description": "Playground dependencies `fflate`, `ws`, `picomatch`, `tar`, `source-map-js`, `smol-toml`, Monaco/DOMPurify, and the Wrangler API stack were updated to address security advisories.",
+            "commits": [
+              "84e3f4f",
+              "96c8d44",
+              "61104fc",
+              "b50b683",
+              "7e8a18d",
+              "9e9ad51",
+              "29c3a12",
+              "29057bd"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Add preview rule unnecessary-regular-expression-compile (complexity)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Avoid syntax errors for type variables with starred constraints (UP040, UP046, UP047, RUF053)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "D417 treats backslash-escaped *args and **kwargs as documented",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "PLE0643 avoid false positive on starred elements",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "PLR5501, PLW0120 mark fixes unsafe when deleting comments",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "UP035 mark fix unsafe when deleting comments",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Avoid intermediate names in lint name resolution (performance)",
+            "coverage": "missed",
+            "commit": "2983c7c"
+          },
+          {
+            "text": "Prefilter bidirectional Unicode checks by UTF-8 leading bytes (performance)",
+            "coverage": "missed",
+            "commit": "6f8de53"
+          },
+          {
+            "text": "Share postfix parsing and reduce expression copies (performance)",
+            "coverage": "missed",
+            "commit": "85430a9"
+          },
+          {
+            "text": "Add configurable allowlist for magic-value-comparison (PLR2004)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Clarify documentation and correct stale guidance",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Remove variance mentions related to fix safety (UP040, UP047)",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 14,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 15,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 16,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 17,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 18,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 19,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 20,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 21,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 22,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 23,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 24,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 25,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 26,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 27,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 28,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 29,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 30,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 31,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 32,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 33,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 34,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 35,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 36,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 37,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 38,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 39,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 40,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 41,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 1,
+      "name": "fastapi",
+      "repo": "fastapi/fastapi",
+      "base": "0.159.0",
+      "head": "0.160.0",
+      "commits": 8,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 1.3,
+      "tokens": 826,
+      "judge_tokens": 1068,
+      "recall": 0.5,
+      "accuracy": 1.0,
+      "entries": 2,
+      "shas_cited": 2,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds support for optional unions of form models and fixes `extra` configuration handling in parameter models.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Support for optional unions of form models.",
+            "commits": [
+              "86274cc"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Each parameter model's `extra` configuration is now applied to sibling fields.",
+            "commits": [
+              "91a335c"
+            ]
+          }
+        ],
+        "other": []
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Parameter models apply their `extra` configuration to all submitted fields in the same parameter location, including fields from other models, individual parameters, or dependencies (breaking change).",
+            "coverage": "full",
+            "commit": "91a335c"
+          },
+          {
+            "text": "Bump certifi from 2026.1.4 to 2026.10.19.",
+            "coverage": "missed",
+            "commit": "97858ed"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "fastapi",
+      "repo": "fastapi/fastapi",
+      "base": "0.159.0",
+      "head": "0.160.0",
+      "commits": 8,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 1.4,
+      "tokens": 853,
+      "judge_tokens": 1092,
+      "recall": 0.16666666666666666,
+      "accuracy": 1.0,
+      "entries": 2,
+      "shas_cited": 2,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds support for optional unions of form models and fixes parameter model `extra` configuration for sibling fields.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Support for optional unions of form models.",
+            "commits": [
+              "86274cc"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Each parameter model's `extra` configuration is now applied to sibling fields.",
+            "commits": [
+              "91a335c"
+            ]
+          }
+        ],
+        "other": []
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Parameter models apply their `extra` configuration to all submitted fields in the same parameter location, including fields from other models, individual parameters, or dependencies",
+            "coverage": "partial",
+            "commit": "91a335c"
+          },
+          {
+            "text": "With extra=\"forbid\", fields outside the model are rejected even if another parameter declares them; with extra=\"allow\" they become model extras; with default extra=\"ignore\" they are ignored",
+            "coverage": "missed",
+            "commit": "91a335c"
+          },
+          {
+            "text": "Bump certifi from 2026.1.4 to 2026.10.19",
+            "coverage": "missed",
+            "commit": "97858ed"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "fastapi",
+      "repo": "fastapi/fastapi",
+      "base": "0.159.0",
+      "head": "0.160.0",
+      "commits": 8,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 1.4,
+      "tokens": 859,
+      "judge_tokens": 1146,
+      "recall": 0.5,
+      "accuracy": 1.0,
+      "entries": 2,
+      "shas_cited": 2,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds support for optional unions of form models and fixes handling of a parameter model's `extra` configuration for sibling fields.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Added support for optional unions of form models.",
+            "commits": [
+              "86274cc"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed each parameter model's `extra` configuration not being applied to sibling fields.",
+            "commits": [
+              "91a335c"
+            ]
+          }
+        ],
+        "other": []
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Parameter models (query, header, cookie, form) apply their `extra` configuration to all fields in the same parameter location, including fields from other models, individual parameters, or dependencies",
+            "coverage": "full",
+            "commit": "91a335c"
+          },
+          {
+            "text": "With `extra=\"forbid\"`, fields outside the model are rejected even if another parameter declares them; with `extra=\"allow\"` they become model extras; with default `extra=\"ignore\"` they are ignored",
+            "coverage": "partial",
+            "commit": "91a335c"
+          },
+          {
+            "text": "Bump certifi from 2026.1.4 to 2026.10.19",
+            "coverage": "missed",
+            "commit": "97858ed"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 1,
+      "name": "httpx",
+      "repo": "encode/httpx",
+      "base": "0.27.2",
+      "head": "0.28.0",
+      "commits": 34,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 3.0,
+      "tokens": 1909,
+      "judge_tokens": 2495,
+      "recall": 0.45,
+      "accuracy": 0.9090909090909091,
+      "entries": 11,
+      "shas_cited": 16,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Introduces a new `SSLContext` API, adds SOCKS5h proxy support, and moves URL utilities to public locations, alongside a range of fixes and deprecations.",
+        "breaking": [
+          {
+            "description": "The `SSLContext` API is deprecated in favor of a new `SSLContext` API; existing usage will raise deprecation warnings.",
+            "commits": [
+              "8e36f2b"
+            ]
+          },
+          {
+            "description": "Utility functions have been moved from `_utils.py` to `_client.py`, `_models.py`, and `_multipart.py`, which may break private imports.",
+            "commits": [
+              "7b19cd5",
+              "41597ad",
+              "6212e8f",
+              "83a8518"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Added support for SOCKS5h proxies.",
+            "commits": [
+              "12be5c4"
+            ]
+          },
+          {
+            "description": "The `certifi` and `httpcore` dependencies are now loaded only when required.",
+            "commits": [
+              "e9cabc8"
+            ]
+          },
+          {
+            "description": "Importing `ssl` is now deferred until needed.",
+            "commits": [
+              "2ea2286"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Passing a string to `verify` now raises an error.",
+            "commits": [
+              "ce7e14d"
+            ]
+          },
+          {
+            "description": "Fixed handling of empty zstandard-compressed responses.",
+            "commits": [
+              "47f4a96"
+            ]
+          },
+          {
+            "description": "Fixed JSON representation to be compact.",
+            "commits": [
+              "9fd6f0c"
+            ]
+          },
+          {
+            "description": "Clarified error message when a header value is `None`.",
+            "commits": [
+              "49d74a2"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "URL percent-escaping sets have been reviewed and updated to align with the WHATWG specification; form spaces now use `+` behavior.",
+            "commits": [
+              "ba2e512",
+              "d293374",
+              "5dda2aa"
+            ]
+          },
+          {
+            "description": "Improved the graceful upgrade path for version 0.28.",
+            "commits": [
+              "1805ee0"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "verify argument as a string is deprecated and raises warnings",
+            "coverage": "partial",
+            "commit": "ce7e14d"
+          },
+          {
+            "text": "cert argument is deprecated and raises warnings",
+            "coverage": "missed",
+            "commit": "8e36f2b"
+          },
+          {
+            "text": "deprecated proxies argument removed",
+            "coverage": "missed",
+            "commit": "1805ee0"
+          },
+          {
+            "text": "deprecated app argument removed",
+            "coverage": "missed",
+            "commit": "1805ee0"
+          },
+          {
+            "text": "JSON request bodies use compact representation",
+            "coverage": "full",
+            "commit": "9fd6f0c"
+          },
+          {
+            "text": "Review URL percent escape sets based on WHATWG spec",
+            "coverage": "full",
+            "commit": "d293374"
+          },
+          {
+            "text": "certifi and httpcore only imported if required",
+            "coverage": "full",
+            "commit": "e9cabc8"
+          },
+          {
+            "text": "Treat socks5h as valid proxy scheme",
+            "coverage": "full",
+            "commit": "12be5c4"
+          },
+          {
+            "text": "Cleanup Request() method signature",
+            "coverage": "missed",
+            "commit": "6622553"
+          },
+          {
+            "text": "Bugfix: params={} strictly updates rather than merges querystring",
+            "coverage": "missed",
+            "commit": "3f76571"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": false,
+            "reason": "Misstates the change: it deprecates the verify-as-string and cert arguments, not the SSLContext API itself."
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "httpx",
+      "repo": "encode/httpx",
+      "base": "0.27.2",
+      "head": "0.28.0",
+      "commits": 34,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.8,
+      "tokens": 1839,
+      "judge_tokens": 2394,
+      "recall": 0.5,
+      "accuracy": 0.8888888888888888,
+      "entries": 9,
+      "shas_cited": 13,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds a new `SSLContext` API, SOCKS5h proxy support, and error-checking improvements, while tightening URL escaping and JSON serialization.",
+        "breaking": [
+          {
+            "description": "The new `SSLContext` API replaces the deprecated `cert` and `verify` parameters; verifying with a string is now an error.",
+            "commits": [
+              "8e36f2b",
+              "ce7e14d"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "SOCKS5h proxy support.",
+            "commits": [
+              "12be5c4"
+            ]
+          },
+          {
+            "description": "`certifi` and `httpcore` are now imported only when required.",
+            "commits": [
+              "e9cabc8",
+              "2ea2286"
+            ]
+          },
+          {
+            "description": "A graceful upgrade path to version 0.28.",
+            "commits": [
+              "1805ee0"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Empty zstd responses are now handled correctly.",
+            "commits": [
+              "47f4a96"
+            ]
+          },
+          {
+            "description": "URL percent-escaping sets now follow the WHATWG specification, with `+` used for spaces in form data.",
+            "commits": [
+              "d293374",
+              "ba2e512",
+              "5dda2aa"
+            ]
+          },
+          {
+            "description": "JSON bodies are now serialized in compact form.",
+            "commits": [
+              "9fd6f0c"
+            ]
+          },
+          {
+            "description": "Setting a header value to `None` now raises a clearer error.",
+            "commits": [
+              "49d74a2"
+            ]
+          },
+          {
+            "description": "Fixed the `extensions` type annotation.",
+            "commits": [
+              "a33c878"
+            ]
+          }
+        ],
+        "other": []
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "verify argument as a string is deprecated and raises warnings",
+            "coverage": "partial",
+            "commit": "ce7e14d"
+          },
+          {
+            "text": "cert argument is deprecated and raises warnings",
+            "coverage": "partial",
+            "commit": "8e36f2b"
+          },
+          {
+            "text": "deprecated proxies argument removed",
+            "coverage": "missed",
+            "commit": "1805ee0"
+          },
+          {
+            "text": "deprecated app argument removed",
+            "coverage": "missed",
+            "commit": "1805ee0"
+          },
+          {
+            "text": "JSON request bodies use compact representation",
+            "coverage": "full",
+            "commit": "9fd6f0c"
+          },
+          {
+            "text": "Review URL percent escape sets based on WHATWG spec",
+            "coverage": "full",
+            "commit": "d293374"
+          },
+          {
+            "text": "certifi and httpcore only imported if required",
+            "coverage": "full",
+            "commit": "e9cabc8"
+          },
+          {
+            "text": "Treat socks5h as a valid proxy scheme",
+            "coverage": "full",
+            "commit": "12be5c4"
+          },
+          {
+            "text": "Cleanup Request() method signature",
+            "coverage": "missed",
+            "commit": "6622553"
+          },
+          {
+            "text": "Bugfix: params={} strictly updates rather than merges with existing querystring",
+            "coverage": "missed",
+            "commit": "3f76571"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": false,
+            "reason": "The reference deprecates string verify and cert (with warnings), not errors; the generated entry says verifying with a string is now an error and frames it as a breaking replacement."
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "httpx",
+      "repo": "encode/httpx",
+      "base": "0.27.2",
+      "head": "0.28.0",
+      "commits": 34,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.7,
+      "tokens": 1831,
+      "judge_tokens": 2358,
+      "recall": 0.45,
+      "accuracy": 0.8888888888888888,
+      "entries": 9,
+      "shas_cited": 12,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Introduces a new `SSLContext` API with deprecations, adds SOCKS5H proxy support, and fixes several issues including zstd response handling and SSL string verification.",
+        "breaking": [
+          {
+            "description": "The `SSLContext` API has been introduced, and prior SSL-related parameters are now deprecated.",
+            "commits": [
+              "8e36f2b"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Added support for SOCKS5H proxies.",
+            "commits": [
+              "12be5c4"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Handled empty zstd responses.",
+            "commits": [
+              "47f4a96"
+            ]
+          },
+          {
+            "description": "An error is now raised when `verify` is passed as a string.",
+            "commits": [
+              "ce7e14d"
+            ]
+          },
+          {
+            "description": "Fixed `extensions` type annotation.",
+            "commits": [
+              "a33c878"
+            ]
+          },
+          {
+            "description": "Ensured JSON representation is compact.",
+            "commits": [
+              "9fd6f0c"
+            ]
+          },
+          {
+            "description": "Clarified error when a header value is `None`.",
+            "commits": [
+              "49d74a2"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "The `ssl`, `certifi`, and `httpcore` dependencies are now imported only when required.",
+            "commits": [
+              "e9cabc8",
+              "2ea2286"
+            ]
+          },
+          {
+            "description": "URL percent escaping sets were reviewed and aligned with WHATWG, and form spaces now use `+` behavior.",
+            "commits": [
+              "d293374",
+              "ba2e512",
+              "5dda2aa"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "verify argument as a string is deprecated and raises warnings",
+            "coverage": "partial",
+            "commit": "ce7e14d"
+          },
+          {
+            "text": "cert argument is deprecated and raises warnings",
+            "coverage": "missed",
+            "commit": "8e36f2b"
+          },
+          {
+            "text": "deprecated proxies argument removed",
+            "coverage": "missed",
+            "commit": "1805ee0"
+          },
+          {
+            "text": "deprecated app argument removed",
+            "coverage": "missed",
+            "commit": "1805ee0"
+          },
+          {
+            "text": "JSON request bodies use compact representation",
+            "coverage": "full",
+            "commit": "9fd6f0c"
+          },
+          {
+            "text": "Review URL percent escape sets based on WHATWG spec",
+            "coverage": "full",
+            "commit": "d293374"
+          },
+          {
+            "text": "Ensure certifi and httpcore only imported if required",
+            "coverage": "full",
+            "commit": "e9cabc8"
+          },
+          {
+            "text": "Treat socks5h as valid proxy scheme",
+            "coverage": "full",
+            "commit": "12be5c4"
+          },
+          {
+            "text": "Cleanup Request() method signature",
+            "coverage": "missed",
+            "commit": "6622553"
+          },
+          {
+            "text": "Bugfix: params={} strictly updates rather than merges querystring",
+            "coverage": "missed",
+            "commit": "3f76571"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": false,
+            "reason": "The commit deprecates string verify with a warning, not raising an error."
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 1,
+      "name": "flask",
+      "repo": "pallets/flask",
+      "base": "3.0.3",
+      "head": "3.1.0",
+      "commits": 163,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 3.1,
+      "tokens": 6490,
+      "judge_tokens": 7269,
+      "recall": 0.65,
+      "accuracy": 0.9230769230769231,
+      "entries": 13,
+      "shas_cited": 13,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds trusted host validation, secret key rotation, session cookie partitioning, and configurable OPTIONS responses, while dropping Python 3.8 support and updating environment file precedence.",
+        "breaking": [
+          {
+            "description": "Dropped support for Python 3.8.",
+            "commits": [
+              "99ce7ed"
+            ]
+          },
+          {
+            "description": "The minimum required version of Blinker is now 1.9.",
+            "commits": [
+              "07c7d57"
+            ]
+          },
+          {
+            "description": "Environment files now have lower precedence than environment variables.",
+            "commits": [
+              "7522c4b"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Added `request.trusted_hosts` configuration to validate the `Host` header.",
+            "commits": [
+              "7b21d43"
+            ]
+          },
+          {
+            "description": "Added support for secret key rotation.",
+            "commits": [
+              "a20bcff"
+            ]
+          },
+          {
+            "description": "Added `SESSION_COOKIE_PARTITIONED` config to enable partitioned session cookies.",
+            "commits": [
+              "ce08bc7"
+            ]
+          },
+          {
+            "description": "Added configuration to control automatic OPTIONS responses.",
+            "commits": [
+              "d718ecf"
+            ]
+          },
+          {
+            "description": "Added `encoding` parameter to `open_resource`.",
+            "commits": [
+              "a8956fe"
+            ]
+          },
+          {
+            "description": "Session interface now uses generic base classes.",
+            "commits": [
+              "2eab96a"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed `subdomain_matching=False` behavior when `SERVER_NAME` is set.",
+            "commits": [
+              "10bdf61"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Documented caveats about changing `SESSION_COOKIE_DOMAIN`.",
+            "commits": [
+              "a2f495b"
+            ]
+          },
+          {
+            "description": "Updated `send_from_directory` docstring to match Werkzeug.",
+            "commits": [
+              "6c44dd4"
+            ]
+          },
+          {
+            "description": "Added type annotations to functions.",
+            "commits": [
+              "6d126e1"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Drop support for Python 3.8",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Update minimum dependency versions (Werkzeug >= 3.1, ItsDangerous >= 2.2, Blinker >= 1.9)",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Provide a configuration option to control automatic option responses",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "open_resource/open_instance_resource and Blueprint.open_resource take an encoding parameter",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Request.max_content_length customizable per-request; add MAX_FORM_MEMORY_SIZE and MAX_FORM_PARTS config; document resource limits",
+            "coverage": "missed",
+            "commit": "6f2014d"
+          },
+          {
+            "text": "Add support for Partitioned cookie attribute with SESSION_COOKIE_PARTITIONED config",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "-e path takes precedence over default .env and .flaskenv; load_dotenv loads defaults unless load_defaults=False",
+            "coverage": "missed",
+            "commit": "7522c4b"
+          },
+          {
+            "text": "Support key rotation with SECRET_KEY_FALLBACKS config",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fix host_matching=True or subdomain_matching=False interaction with SERVER_NAME; SERVER_NAME no longer restricts requests",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Request.trusted_hosts checked during routing, set through TRUSTED_HOSTS config",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": false,
+            "reason": "The commit changes precedence of -e path vs default .env/.flaskenv files, not environment variables vs environment files."
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "flask",
+      "repo": "pallets/flask",
+      "base": "3.0.3",
+      "head": "3.1.0",
+      "commits": 163,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 4.5,
+      "tokens": 6766,
+      "judge_tokens": 7690,
+      "recall": 0.85,
+      "accuracy": 1.0,
+      "entries": 22,
+      "shas_cited": 38,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Flask 3.1.0 adds configurable trusted hosts, secret key rotation, partitioned session cookies, request limits configuration, generic session bases, and a config to disable automatic OPTIONS responses. It also changes SERVER_NAME behavior with subdomain and host matching, drops Python 3.8 support, and raises the minimum Werkzeug and Blinker versions.",
+        "breaking": [
+          {
+            "description": "Dropped support for Python 3.8.",
+            "commits": [
+              "99ce7ed"
+            ]
+          },
+          {
+            "description": "The minimum Blinker version is now higher.",
+            "commits": [
+              "07c7d57"
+            ]
+          },
+          {
+            "description": "`SERVER_NAME` no longer restricts routing for `subdomain_matching` or `host_matching`; with `subdomain_matching=False` routing is fixed.",
+            "commits": [
+              "10bdf61"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Session can be configured with generic bases, and `session` supports custom type parameters.",
+            "commits": [
+              "2eab96a",
+              "f49dbfd"
+            ]
+          },
+          {
+            "description": "`request.trusted_hosts` can be configured and checked.",
+            "commits": [
+              "7b21d43",
+              "4f7156f"
+            ]
+          },
+          {
+            "description": "Secret keys can be rotated while still allowing session cookies signed by older keys.",
+            "commits": [
+              "a20bcff",
+              "e13373f"
+            ]
+          },
+          {
+            "description": "Environment file loading now uses updated precedence.",
+            "commits": [
+              "7522c4b",
+              "2c31603"
+            ]
+          },
+          {
+            "description": "Added the `SESSION_COOKIE_PARTITIONED` config option.",
+            "commits": [
+              "ce08bc7",
+              "9efc1eb"
+            ]
+          },
+          {
+            "description": "Added configuration and docs for request limits.",
+            "commits": [
+              "6f2014d",
+              "c7a5388"
+            ]
+          },
+          {
+            "description": "Added a configuration option to control automatic OPTIONS responses.",
+            "commits": [
+              "d718ecf"
+            ]
+          },
+          {
+            "description": "`open_resource` accepts an `encoding` parameter.",
+            "commits": [
+              "a8956fe",
+              "28d5a4d"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed example and tutorial compatibility and updated metadata.",
+            "commits": [
+              "c62b03b",
+              "a9b99b3"
+            ]
+          },
+          {
+            "description": "Added a SQLite datetime converter to the examples.",
+            "commits": [
+              "8aa161a"
+            ]
+          },
+          {
+            "description": "Updated the `helpers.send_from_directory` docstring to match Werkzeug's `send_from_directory` docstring.",
+            "commits": [
+              "6c44dd4"
+            ]
+          },
+          {
+            "description": "Fixed documentation for `SESSION_COOKIE_DOMAIN` caveats.",
+            "commits": [
+              "a2f495b",
+              "4a1766c"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Updated minimum and development dependencies.",
+            "commits": [
+              "6748a09",
+              "62c56e0",
+              "8f37c82"
+            ]
+          },
+          {
+            "description": "Added Python type annotations and return types.",
+            "commits": [
+              "6d126e1",
+              "c7da8c2"
+            ]
+          },
+          {
+            "description": "Use ruff as the linter and formatter.",
+            "commits": [
+              "9a12f34",
+              "54ff9b2"
+            ]
+          },
+          {
+            "description": "Updated the Hypercorn link in the ASGI deployment docs.",
+            "commits": [
+              "8d9519d",
+              "be6ec06"
+            ]
+          },
+          {
+            "description": "Fixed the `follow_redirects` sample code in the testing docs.",
+            "commits": [
+              "beedaa4",
+              "bb99375"
+            ]
+          },
+          {
+            "description": "Updated the JavaScript example documentation link.",
+            "commits": [
+              "57add38",
+              "823e279"
+            ]
+          },
+          {
+            "description": "Replaced an obsolete link in the JavaScript example.",
+            "commits": [
+              "541bc8d"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Drop support for Python 3.8",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Update minimum dependency versions (Werkzeug >= 3.1, ItsDangerous >= 2.2, Blinker >= 1.9)",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Provide a configuration option to control automatic option responses",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "open_resource/open_instance_resource and Blueprint.open_resource take an encoding parameter",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Request.max_content_length customizable per-request; add MAX_FORM_MEMORY_SIZE and MAX_FORM_PARTS config; document resource limits",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Add support for Partitioned cookie attribute with SESSION_COOKIE_PARTITIONED config",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "-e path takes precedence over default .env and .flaskenv; load_dotenv loads defaults unless load_defaults=False",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Support key rotation with SECRET_KEY_FALLBACKS config",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fix how host_matching=True or subdomain_matching=False interacts with SERVER_NAME; SERVER_NAME no longer restricts requests",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Request.trusted_hosts is checked during routing, settable via TRUSTED_HOSTS config",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 14,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 15,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 16,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 17,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 18,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 19,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 20,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 21,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 22,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "flask",
+      "repo": "pallets/flask",
+      "base": "3.0.3",
+      "head": "3.1.0",
+      "commits": 163,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 3.5,
+      "tokens": 6606,
+      "judge_tokens": 7445,
+      "recall": 0.8,
+      "accuracy": 0.9333333333333333,
+      "entries": 15,
+      "shas_cited": 26,
+      "duplicate_shas": 2,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Flask 3.1.0 adds secret key rotation, trusted hosts, session cookie partitioning, and limit configuration, and drops support for Python 3.8.",
+        "breaking": [
+          {
+            "description": "Dropped support for Python 3.8.",
+            "commits": [
+              "99ce7ed",
+              "1d610e4"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Secret key rotation is supported via the `SECRET_KEY_FALLBACKS` config.",
+            "commits": [
+              "a20bcff",
+              "e13373f"
+            ]
+          },
+          {
+            "description": "Added `TRUSTED_HOSTS` config and `request.trusted_hosts` to validate the request host.",
+            "commits": [
+              "7b21d43",
+              "4f7156f"
+            ]
+          },
+          {
+            "description": "Added `SESSION_COOKIE_PARTITIONED` config to enable partitioned session cookies.",
+            "commits": [
+              "ce08bc7",
+              "9efc1eb"
+            ]
+          },
+          {
+            "description": "Configurable limits and documentation added for request size and other limits.",
+            "commits": [
+              "6f2014d",
+              "c7a5388"
+            ]
+          },
+          {
+            "description": "Added `MAX_CONTENT_LENGTH` config and docs.",
+            "commits": [
+              "6f2014d",
+              "c7a5388"
+            ]
+          },
+          {
+            "description": "Added `SESSION_COOKIE_DOMAIN` caveat documentation.",
+            "commits": [
+              "a2f495b",
+              "4a1766c"
+            ]
+          },
+          {
+            "description": "Added `encoding` parameter to `open_resource`.",
+            "commits": [
+              "a8956fe",
+              "28d5a4d"
+            ]
+          },
+          {
+            "description": "Added configuration option to control automatic OPTIONS responses.",
+            "commits": [
+              "d718ecf"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Setting `SERVER_NAME` no longer restricts routing when `subdomain_matching` or `host_matching` is enabled.",
+            "commits": [
+              "10bdf61",
+              "4995a77"
+            ]
+          },
+          {
+            "description": "Updated environment file precedence.",
+            "commits": [
+              "7522c4b",
+              "2c31603"
+            ]
+          },
+          {
+            "description": "Updated minimum blinker version to 1.9.",
+            "commits": [
+              "07c7d57",
+              "470e2b8"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Session objects now use generic base classes.",
+            "commits": [
+              "2eab96a",
+              "f49dbfd"
+            ]
+          },
+          {
+            "description": "Updated example and tutorial compatibility and metadata.",
+            "commits": [
+              "c62b03b",
+              "a9b99b3"
+            ]
+          },
+          {
+            "description": "Added sqlite datetime converter to examples.",
+            "commits": [
+              "8aa161a"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Drop support for Python 3.8",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Update minimum dependency versions (Werkzeug >= 3.1, ItsDangerous >= 2.2, Blinker >= 1.9)",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Provide a configuration option to control automatic option responses",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "open_resource/open_instance_resource and Blueprint.open_resource take an encoding parameter",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Request.max_content_length customizable per-request; add MAX_FORM_MEMORY_SIZE and MAX_FORM_PARTS config; document resource limits",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Add support for Partitioned cookie attribute with SESSION_COOKIE_PARTITIONED config",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "-e path takes precedence over default .env and .flaskenv; load_dotenv loads defaults unless load_defaults=False",
+            "coverage": "partial",
+            "commit": null
+          },
+          {
+            "text": "Support key rotation with SECRET_KEY_FALLBACKS config",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fix how host_matching=True or subdomain_matching=False interacts with SERVER_NAME; SERVER_NAME no longer restricts requests",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Request.trusted_hosts is checked during routing, settable via TRUSTED_HOSTS config",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": false,
+            "reason": "MAX_CONTENT_LENGTH already existed; the commits add MAX_FORM_MEMORY_SIZE and MAX_FORM_PARTS and per-request max_content_length, not a new MAX_CONTENT_LENGTH config."
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 11,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 12,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 13,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 14,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 15,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 1,
+      "name": "requests",
+      "repo": "psf/requests",
+      "base": "v2.33.1",
+      "head": "v2.34.0",
+      "commits": 34,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.3,
+      "tokens": 1922,
+      "judge_tokens": 2695,
+      "recall": 0.8571428571428571,
+      "accuracy": 1.0,
+      "entries": 9,
+      "shas_cited": 10,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds inline type annotations, fixes hook typing, preserves leading slashes in request paths, and prevents Response self-references in redirect history.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Inline type annotations for Requests.",
+            "commits": [
+              "561e4b6"
+            ]
+          },
+          {
+            "description": "`Session.get` parameters now align with `requests.get`.",
+            "commits": [
+              "86b378d"
+            ]
+          },
+          {
+            "description": "DigestAuth hash algorithms now use `usedforsecurity=False`.",
+            "commits": [
+              "a044b02"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Leading slashes are now preserved in the request `path_url`.",
+            "commits": [
+              "fd62809"
+            ]
+          },
+          {
+            "description": "Fixed `Session` hooks type annotation.",
+            "commits": [
+              "b684dcb"
+            ]
+          },
+          {
+            "description": "Prevented a `Response` self-reference in redirect history.",
+            "commits": [
+              "ef439eb"
+            ]
+          },
+          {
+            "description": "`SupportsItems` is now parameterized to handle `Mapping` key invariance.",
+            "commits": [
+              "3816cfa"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Added support for Python 3.15 and the 3.14t free-threaded build.",
+            "commits": [
+              "dc9dbdf",
+              "eb173bc"
+            ]
+          },
+          {
+            "description": "Clarified `decode_unicode` behaviour in `iter_content` and `iter_lines` docstrings.",
+            "commits": [
+              "d2f6bde"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Inline types replacing typeshed",
+            "coverage": "full",
+            "commit": "561e4b6"
+          },
+          {
+            "text": "DigestAuth uses usedforsecurity=False",
+            "coverage": "full",
+            "commit": "a044b02"
+          },
+          {
+            "text": "Python 3.15 support",
+            "coverage": "full",
+            "commit": "dc9dbdf"
+          },
+          {
+            "text": "Python 3.14t support",
+            "coverage": "full",
+            "commit": "eb173bc"
+          },
+          {
+            "text": "Response.history no longer self-references",
+            "coverage": "full",
+            "commit": "ef439eb"
+          },
+          {
+            "text": "no_proxy greedy matching fixed via bpo-39057",
+            "coverage": "missed",
+            "commit": "a4f9a59"
+          },
+          {
+            "text": "Preserve duplicate leading slashes in URI paths",
+            "coverage": "full",
+            "commit": "fd62809"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "requests",
+      "repo": "psf/requests",
+      "base": "v2.33.1",
+      "head": "v2.34.0",
+      "commits": 34,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.2,
+      "tokens": 2008,
+      "judge_tokens": 2667,
+      "recall": 0.7142857142857143,
+      "accuracy": 1.0,
+      "entries": 9,
+      "shas_cited": 9,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds inline type annotations, aligns `Session.get` with `requests.get`, fixes `path_url` handling of leading slashes, and prevents `Response` self-references in redirect history.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "Inline type annotations are now included in Requests.",
+            "commits": [
+              "561e4b6"
+            ]
+          },
+          {
+            "description": "`Session.get` parameters are now aligned with `requests.get`.",
+            "commits": [
+              "86b378d"
+            ]
+          },
+          {
+            "description": "Added support for Python 3.15.",
+            "commits": [
+              "dc9dbdf"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Leading slashes are now preserved in the request `path_url`.",
+            "commits": [
+              "fd62809"
+            ]
+          },
+          {
+            "description": "Prevented `Response` self-references in redirect history.",
+            "commits": [
+              "ef439eb"
+            ]
+          },
+          {
+            "description": "Fixed the `Session` hooks type annotation.",
+            "commits": [
+              "b684dcb"
+            ]
+          },
+          {
+            "description": "DigestAuth hash algorithm lookups now use `usedforsecurity=False`.",
+            "commits": [
+              "a044b02"
+            ]
+          },
+          {
+            "description": "Consider urllib3 versions with at most three numbers.",
+            "commits": [
+              "b294b08"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Clarified `decode_unicode` behaviour in `iter_content` and `iter_lines` docstrings.",
+            "commits": [
+              "d2f6bde"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Inline types replace typeshed types",
+            "coverage": "full",
+            "commit": "561e4b6"
+          },
+          {
+            "text": "Digest Auth hashing uses usedforsecurity=False",
+            "coverage": "full",
+            "commit": "a044b02"
+          },
+          {
+            "text": "Support for Python 3.15",
+            "coverage": "full",
+            "commit": "dc9dbdf"
+          },
+          {
+            "text": "Support for Python 3.14t",
+            "coverage": "missed",
+            "commit": "eb173bc"
+          },
+          {
+            "text": "Response.history no longer contains self-reference",
+            "coverage": "full",
+            "commit": "ef439eb"
+          },
+          {
+            "text": "No greedy matching on no_proxy domains (bpo-39057)",
+            "coverage": "missed",
+            "commit": "a4f9a59"
+          },
+          {
+            "text": "No longer strips duplicate leading slashes in URI paths",
+            "coverage": "full",
+            "commit": "fd62809"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "requests",
+      "repo": "psf/requests",
+      "base": "v2.33.1",
+      "head": "v2.34.0",
+      "commits": 34,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.6,
+      "tokens": 2052,
+      "judge_tokens": 2744,
+      "recall": 0.8571428571428571,
+      "accuracy": 1.0,
+      "entries": 10,
+      "shas_cited": 11,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds inline type information, aligns Session.get parameters with requests.get, fixes hook typing in sessions, and includes several documentation and test fixes.",
+        "breaking": [],
+        "features": [
+          {
+            "description": "`Session.get` parameters are now aligned with `requests.get`.",
+            "commits": [
+              "86b378d"
+            ]
+          },
+          {
+            "description": "Added inline type annotations to Requests.",
+            "commits": [
+              "561e4b6"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed the hooks parameter type on sessions.",
+            "commits": [
+              "b684dcb"
+            ]
+          },
+          {
+            "description": "Preserved leading slashes in the request `path_url`.",
+            "commits": [
+              "fd62809"
+            ]
+          },
+          {
+            "description": "Prevented `Response` objects from referencing themselves in redirect history.",
+            "commits": [
+              "ef439eb"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "DigestAuth hash algorithms now use `usedforsecurity=False`.",
+            "commits": [
+              "a044b02"
+            ]
+          },
+          {
+            "description": "Added support for Python 3.14t and formalized Python 3.15 support in CI.",
+            "commits": [
+              "eb173bc",
+              "dc9dbdf"
+            ]
+          },
+          {
+            "description": "Parameterized `SupportsItems` to handle `Mapping` key invariance.",
+            "commits": [
+              "3816cfa"
+            ]
+          },
+          {
+            "description": "Updated urllib3 version parsing to handle at most three version numbers.",
+            "commits": [
+              "b294b08"
+            ]
+          },
+          {
+            "description": "Clarified `decode_unicode` behavior in `iter_content` and `iter_lines` docstrings.",
+            "commits": [
+              "d2f6bde"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Inline types replacing typeshed",
+            "coverage": "full",
+            "commit": "561e4b6"
+          },
+          {
+            "text": "Digest Auth hashing algorithms use usedforsecurity=False",
+            "coverage": "full",
+            "commit": "a044b02"
+          },
+          {
+            "text": "Support for Python 3.15 (beta1)",
+            "coverage": "full",
+            "commit": "dc9dbdf"
+          },
+          {
+            "text": "Support for Python 3.14t",
+            "coverage": "full",
+            "commit": "eb173bc"
+          },
+          {
+            "text": "Response.history no longer contains self-reference",
+            "coverage": "full",
+            "commit": "ef439eb"
+          },
+          {
+            "text": "No greedy matching on no_proxy domains (bpo-39057)",
+            "coverage": "missed",
+            "commit": "a4f9a59"
+          },
+          {
+            "text": "No longer strips duplicate leading slashes in URI paths",
+            "coverage": "full",
+            "commit": "fd62809"
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 8,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 9,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 10,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 1,
+      "name": "rich",
+      "repo": "Textualize/rich",
+      "base": "v14.3.4",
+      "head": "v15.0.0",
+      "commits": 28,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.6,
+      "tokens": 1196,
+      "judge_tokens": 1389,
+      "recall": 1.0,
+      "accuracy": 0.8571428571428571,
+      "entries": 7,
+      "shas_cited": 8,
+      "duplicate_shas": 1,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds proxy isatty, fixes inline code in table cells, preserves newlines in ANSI output, and fixes typing for save_html/save_text/save_svg to accept PathLike.",
+        "breaking": [
+          {
+            "description": "Dropped support for Python 3.8.",
+            "commits": [
+              "285d9e9"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Proxy isatty so that Rich's console reports terminal status correctly.",
+            "commits": [
+              "0e952c3"
+            ]
+          },
+          {
+            "description": "save_html, save_text, and save_svg now accept PathLike objects for their file paths.",
+            "commits": [
+              "31ce129",
+              "a9c4aab"
+            ]
+          },
+          {
+            "description": "HTML export now supports inline code.",
+            "commits": [
+              "7ef2d05",
+              "77f0edb"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Fixed inline code rendering in table cells.",
+            "commits": [
+              "7ef2d05"
+            ]
+          },
+          {
+            "description": "Preserve newlines in ANSI output.",
+            "commits": [
+              "69cee6e"
+            ]
+          },
+          {
+            "description": "Fixed empty with end parameter handling.",
+            "commits": [
+              "b736b97"
+            ]
+          }
+        ],
+        "other": []
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Dropped support for Python 3.8 (breaking change)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed empty print ignoring the end parameter",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed Text.from_ansi removing newlines",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed FileProxy.isatty not proxying",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed inline code in Markdown table cells",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": false,
+            "reason": "Commits 7ef2d05 and 77f0edb fix inline code in table cells, not HTML export inline code support; a9c4aab is the HTML inline support commit and is not listed here."
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 2,
+      "name": "rich",
+      "repo": "Textualize/rich",
+      "base": "v14.3.4",
+      "head": "v15.0.0",
+      "commits": 28,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 1.8,
+      "tokens": 1076,
+      "judge_tokens": 1290,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "entries": 6,
+      "shas_cited": 6,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Drops Python 3.8 support, adds accurate isatty reporting, preserves ANSI newlines, and fixes inline code rendering in table cells.",
+        "breaking": [
+          {
+            "description": "Python 3.8 support is dropped.",
+            "commits": [
+              "285d9e9"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "`save_html`, `save_text` and `save_svg` now accept `PathLike` paths.",
+            "commits": [
+              "31ce129"
+            ]
+          },
+          {
+            "description": "`isatty` is now proxied.",
+            "commits": [
+              "0e952c3"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Inline code in table cells now renders correctly.",
+            "commits": [
+              "7ef2d05"
+            ]
+          },
+          {
+            "description": "Newlines in ANSI output are now preserved.",
+            "commits": [
+              "69cee6e"
+            ]
+          },
+          {
+            "description": "`empty` now works with `end`.",
+            "commits": [
+              "b736b97"
+            ]
+          }
+        ],
+        "other": []
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Dropped support for Python 3.8 (breaking change)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed empty print ignoring the end parameter",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed Text.from_ansi removing newlines",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed FileProxy.isatty not proxying",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed inline code in Markdown table cells",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    },
+    {
+      "run": 3,
+      "name": "rich",
+      "repo": "Textualize/rich",
+      "base": "v14.3.4",
+      "head": "v15.0.0",
+      "commits": 28,
+      "truncated": false,
+      "attempts": 1,
+      "seconds": 2.3,
+      "tokens": 1190,
+      "judge_tokens": 1331,
+      "recall": 1.0,
+      "accuracy": 1.0,
+      "entries": 7,
+      "shas_cited": 7,
+      "duplicate_shas": 0,
+      "long_entries": 0,
+      "notes": {
+        "summary": "Adds support for HTML inline code in table cells, preserves newlines in ANSI output, allows `empty` with `end`, and fixes typing for save functions to accept PathLike.",
+        "breaking": [
+          {
+            "description": "Dropped Python 3.8 support.",
+            "commits": [
+              "285d9e9"
+            ]
+          }
+        ],
+        "features": [
+          {
+            "description": "Markdown inline code is now supported in table cells.",
+            "commits": [
+              "7ef2d05"
+            ]
+          },
+          {
+            "description": "`empty` can now be used with `end`.",
+            "commits": [
+              "b736b97"
+            ]
+          },
+          {
+            "description": "`save_html`, `save_text`, and `save_svg` now accept `PathLike` for their arguments.",
+            "commits": [
+              "31ce129"
+            ]
+          }
+        ],
+        "fixes": [
+          {
+            "description": "Preserve newlines in ANSI output.",
+            "commits": [
+              "69cee6e"
+            ]
+          },
+          {
+            "description": "Proxy `isatty` to the underlying file.",
+            "commits": [
+              "0e952c3"
+            ]
+          }
+        ],
+        "other": [
+          {
+            "description": "Bumped version to 15.0.0.",
+            "commits": [
+              "d6556bc"
+            ]
+          }
+        ]
+      },
+      "verdict": {
+        "reference_items": [
+          {
+            "text": "Dropped support for Python 3.8 (breaking change)",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed empty print ignoring the end parameter",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed Text.from_ansi removing newlines",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed FileProxy.isatty not proxying",
+            "coverage": "full",
+            "commit": null
+          },
+          {
+            "text": "Fixed inline code in Markdown table cells",
+            "coverage": "full",
+            "commit": null
+          }
+        ],
+        "generated_items": [
+          {
+            "id": 1,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 2,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 3,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 4,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 5,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 6,
+            "accurate": true,
+            "reason": ""
+          },
+          {
+            "id": 7,
+            "accurate": true,
+            "reason": ""
+          }
+        ]
+      }
+    }
+  ]
+}

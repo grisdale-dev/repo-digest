@@ -14,7 +14,7 @@ Turn a GitHub repository's history into readable release notes: features, fixes 
 - [x] **4. Web API + page:** FastAPI endpoint and a simple front end
 - [x] **5. Guardrails:** per-visitor rate limit, result cache, daily token budget
 - [x] **6. Deploy:** live public URL
-- [ ] **7. Evaluate:** compare against real human-written release notes for a few projects
+- [x] **7. Evaluate:** compare against real human-written release notes, see [evals/](evals/README.md)
 - [ ] **8. Publish:** PyPI package and write-up
 
 ## Usage
@@ -60,6 +60,13 @@ uv run ruff check       # lint
 uv run ruff format      # format
 uv run mypy src tests   # type-check (strict)
 ```
+
+## Evaluation
+
+Against the maintainers' own release notes for 7 real releases, repo-digest covers **70%** of the
+changes they list, and **97%** of its entries accurately describe their commits (judged by an
+LLM, averaged over 3 runs). The harness, method and what it found are in
+[evals/README.md](evals/README.md).
 
 ## Deployment
 
