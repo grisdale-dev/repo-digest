@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>repo-digest · release notes from commit history</title>
+<meta name="description" content="Paste a public GitHub repo and get readable release notes generated from its commit history.">
+<style>
+  :root {
+    --bg: #f7f7f5; --surface: #fff; --text: #1c1c1a; --muted: #67655f; --border: #e3e1db;
+    --accent: #2f6fde; --accent-text: #fff; --code-bg: #f0efe9; --error-bg: #fdecea; --error: #a3261b;
+    --radius: 10px; color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413; --surface: #1d1d1b; --text: #ecebe6; --muted: #a19f97; --border: #33322e;
+      --accent: #6e9ef5; --accent-text: #0d1526; --code-bg: #2a2a27; --error-bg: #3a1f1b; --error: #f2a196;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 760px; margin: 0 auto; padding: 40px 16px 24px; }
+  h1 { font-size: 1.9rem; margin: 0 0 4px; letter-spacing: -0.02em; }
+  .lede { color: var(--muted); margin: 0 0 28px; }
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+          padding: 20px; margin-bottom: 20px; }
+  label { display: block; font-weight: 600; font-size: 14px; margin-bottom: 6px; }
+  input[type=text], input[type=date] {
+    width: 100%; font: inherit; padding: 9px 11px; border: 1px solid var(--border);
+    border-radius: 8px; background: var(--bg); color: var(--text); }
+  input:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .modes { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 16px 0 12px; font-size: 15px; }
+  .modes label { display: inline-flex; gap: 6px; align-items: center; font-weight: 400; margin: 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 520px) { .row { grid-template-columns: 1fr; } }
+  [hidden] { display: none !important; }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 16px; }
+  button { font: inherit; font-weight: 600; border: 0; border-radius: 8px; padding: 9px 16px;
+           background: var(--accent); color: var(--accent-text); cursor: pointer; }
+  button.secondary { background: transparent; color: var(--accent); border: 1px solid var(--border);
+                     font-weight: 500; padding: 6px 12px; }
+  button:disabled { opacity: .6; cursor: progress; }
+  .examples { font-size: 14px; color: var(--muted); }
+  .examples a { color: var(--accent); cursor: pointer; text-decoration: underline; }
+  .status { color: var(--muted); font-size: 15px; }
+  .error { background: var(--error-bg); color: var(--error); border-radius: 8px; padding: 10px 14px; }
+  .result-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px;
+                 align-items: baseline; border-bottom: 1px solid var(--border);
+                 padding-bottom: 10px; margin-bottom: 4px; }
+  .result-head h2 { font-size: 1.15rem; margin: 0; }
+  .meta { color: var(--muted); font-size: 13px; }
+  #notes h3 { font-size: 1.02rem; margin: 20px 0 6px; }
+  #notes ul { padding-left: 20px; margin: 0; }
+  #notes li { margin: 4px 0; }
+  #notes .refs { font-size: 13px; color: var(--muted); }
+  #notes .refs a { color: var(--muted); }
+  code { background: var(--code-bg); border-radius: 4px; padding: 1px 4px; font-size: .9em; }
+  footer { color: var(--muted); font-size: 13px; text-align: center; padding: 8px 16px 32px; }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>repo-digest</h1>
+  <p class="lede">Paste a public GitHub repository and get readable release notes generated from its commit history.</p>
+
+  <form class="card" id="form">
+    <label for="repo">Repository</label>
+    <input type="text" id="repo" name="repo" placeholder="owner/repo or https://github.com/owner/repo"
+           required autocomplete="off" spellcheck="false">
+
+    <div class="modes" role="radiogroup" aria-label="Range">
+      <label><input type="radio" name="mode" value="recent" checked> Last 30 days</label>
+      <label><input type="radio" name="mode" value="dates"> Between dates</label>
+      <label><input type="radio" name="mode" value="tags"> Between tags</label>
+    </div>
+
+    <div class="row" id="dates" hidden>
+      <div><label for="since">From</label><input type="date" id="since"></div>
+      <div><label for="until">To (optional)</label><input type="date" id="until"></div>
+    </div>
+    <div class="row" id="tags" hidden>
+      <div><label for="base">From tag</label><input type="text" id="base" placeholder="v1.2.0" spellcheck="false"></div>
+      <div><label for="head">To tag (optional)</label><input type="text" id="head" placeholder="latest commit" spellcheck="false"></div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" id="submit">Generate release notes</button>
+      <span class="examples">Try:
+        <a data-repo="astral-sh/uv" data-base="0.9.0" data-head="0.9.1">uv 0.9.0 → 0.9.1</a> ·
+        <a data-repo="fastapi/fastapi">fastapi, last 30 days</a>
+      </span>
+    </div>
+  </form>
+
+  <p class="status" id="status" role="status" hidden></p>
+  <p class="error" id="error" role="alert" hidden></p>
+
+  <section class="card" id="result" hidden>
+    <div class="result-head">
+      <h2 id="result-title"></h2>
+      <button type="button" class="secondary" id="copy">Copy Markdown</button>
+    </div>
+    <p class="meta" id="meta"></p>
+    <div id="notes"></div>
+  </section>
+</main>
+<footer>
+  Notes are AI-generated, so check them before publishing.
+  · <a href="https://github.com/grisdale-dev/repo-digest">Source on GitHub</a>
+  · Built by Ben Grisdale
+</footer>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const form = $("form");
+let markdown = "";
+
+function selectedMode() {
+  return form.querySelector("input[name=mode]:checked").value;
+}
+
+function showMode() {
+  const mode = selectedMode();
+  $("dates").hidden = mode !== "dates";
+  $("tags").hidden = mode !== "tags";
+  $("since").required = mode === "dates";
+  $("base").required = mode === "tags";
+}
+form.querySelectorAll("input[name=mode]").forEach((el) => el.addEventListener("change", showMode));
+
+document.querySelectorAll(".examples a").forEach((a) => a.addEventListener("click", () => {
+  $("repo").value = a.dataset.repo;
+  const mode = a.dataset.base ? "tags" : "recent";
+  form.querySelector(`input[name=mode][value=${mode}]`).checked = true;
+  $("base").value = a.dataset.base || "";
+  $("head").value = a.dataset.head || "";
+  showMode();
+  form.requestSubmit();
+}));
+
+function show(el, text) { el.textContent = text; el.hidden = !text; }
+
+form.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const body = { repo: $("repo").value.trim() };
+  const mode = selectedMode();
+  if (mode === "dates") {
+    body.since = $("since").value;
+    if ($("until").value) body.until = $("until").value;
+  } else if (mode === "tags") {
+    body.base = $("base").value.trim();
+    if ($("head").value.trim()) body.head = $("head").value.trim();
+  }
+
+  $("submit").disabled = true;
+  show($("error"), "");
+  $("result").hidden = true;
+  show($("status"), "Fetching commits and writing notes… this usually takes 5–20 seconds.");
+  try {
+    const response = await fetch("/api/digest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+      const detail = Array.isArray(data.detail) ? "Please check the form fields." : data.detail;
+      throw new Error(detail || `Request failed (${response.status})`);
+    }
+    markdown = data.markdown;
+    $("result-title").textContent = `${data.repo} · ${data.range}`;
+    const tokens = (data.usage.input_tokens + data.usage.output_tokens).toLocaleString();
+    $("meta").textContent = `${data.commits_used} commits${data.truncated ? " (newest only)" : ""}`
+      + ` · ${tokens} tokens · ${data.model}`;
+    $("notes").innerHTML = data.html; // server-rendered; all model text is HTML-escaped
+    $("result").hidden = false;
+    show($("status"), "");
+  } catch (err) {
+    show($("status"), "");
+    show($("error"), err.message);
+  } finally {
+    $("submit").disabled = false;
+  }
+});
+
+$("copy").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(markdown);
+    $("copy").textContent = "Copied ✓";
+  } catch {
+    $("copy").textContent = "Copy failed";
+  }
+  setTimeout(() => ($("copy").textContent = "Copy Markdown"), 1800);
+});
+</script>
+</body>
+</html>

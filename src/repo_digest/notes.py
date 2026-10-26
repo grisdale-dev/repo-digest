@@ -1,4 +1,7 @@
-"""The structured release-notes format the model must produce, and rendering it as Markdown."""
+"""The structured release-notes format the model must produce, and rendering it."""
+
+import html
+import re
 
 from pydantic import BaseModel, Field
 
@@ -17,6 +20,16 @@ class ReleaseNotes(BaseModel):
     fixes: list[Change] = []
     other: list[Change] = []
 
+    def sections(self) -> list[tuple[str, list[Change]]]:
+        """Non-empty sections, in display order."""
+        all_sections = [
+            ("⚠️ Breaking changes", self.breaking),
+            ("Features", self.features),
+            ("Fixes", self.fixes),
+            ("Other", self.other),
+        ]
+        return [(title, changes) for title, changes in all_sections if changes]
+
     def all_changes(self) -> list[Change]:
         return [*self.breaking, *self.features, *self.fixes, *self.other]
 
@@ -26,21 +39,43 @@ class ReleaseNotes(BaseModel):
         def ref(sha: str) -> str:
             if repo is None:
                 return f"`{sha}`"
-            owner, name = repo
-            return f"[`{sha}`](https://github.com/{owner}/{name}/commit/{sha})"
+            return f"[`{sha}`]({_commit_url(repo, sha)})"
 
-        sections = [
-            ("⚠️ Breaking changes", self.breaking),
-            ("Features", self.features),
-            ("Fixes", self.fixes),
-            ("Other", self.other),
-        ]
         lines = [self.summary]
-        for title, changes in sections:
-            if not changes:
-                continue
+        for title, changes in self.sections():
             lines += ["", f"### {title}", ""]
             lines += [
                 f"- {c.description} ({', '.join(ref(s) for s in c.commits)})" for c in changes
             ]
         return "\n".join(lines) + "\n"
+
+    def to_html(self, repo: tuple[str, str]) -> str:
+        """Render as an HTML fragment. All model-written text is escaped."""
+
+        def ref(sha: str) -> str:
+            url = html.escape(_commit_url(repo, sha))
+            return f'<a href="{url}"><code>{html.escape(sha)}</code></a>'
+
+        parts = [f"<p>{_inline(self.summary)}</p>"]
+        for title, changes in self.sections():
+            parts.append(f"<h3>{html.escape(title)}</h3>")
+            items = "".join(
+                f'<li>{_inline(c.description)} <span class="refs">'
+                f"({', '.join(ref(s) for s in c.commits)})</span></li>"
+                for c in changes
+            )
+            parts.append(f"<ul>{items}</ul>")
+        return "\n".join(parts)
+
+
+def _commit_url(repo: tuple[str, str], sha: str) -> str:
+    owner, name = repo
+    return f"https://github.com/{owner}/{name}/commit/{sha}"
+
+
+_CODE_SPAN = re.compile(r"`([^`]+)`")
+
+
+def _inline(text: str) -> str:
+    """Escape text, then turn `backtick spans` into <code> (safe: content is already escaped)."""
+    return _CODE_SPAN.sub(r"<code>\1</code>", html.escape(text))

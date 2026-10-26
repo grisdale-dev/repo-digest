@@ -3,16 +3,16 @@
 import argparse
 import io
 import sys
-from datetime import UTC, date, datetime, time, timedelta
+from datetime import UTC, date, datetime, time
 
 import httpx
 from openai import APIError, OpenAI
 
+from repo_digest import digest
 from repo_digest.config import load_settings
-from repo_digest.github import Commit, fetch_commits, fetch_commits_between, make_client, parse_repo
-from repo_digest.summarise import MAX_COMMITS, SummaryError, summarise
-
-DEFAULT_DAYS = 30
+from repo_digest.digest import CommitRange, DateRange, RefRange
+from repo_digest.github import make_client, parse_repo
+from repo_digest.summarise import SummaryError, summarise
 
 EXAMPLES = """\
 examples:
@@ -58,28 +58,23 @@ def build_parser() -> argparse.ArgumentParser:
     return parser
 
 
-def _describe_range(args: argparse.Namespace) -> str:
+def _range_from_args(parser: argparse.ArgumentParser, args: argparse.Namespace) -> CommitRange:
+    if args.head and not args.base:
+        parser.error("--to needs --from")
     if args.base:
-        return f"{args.base}...{args.head or 'HEAD'}"
-    return f"{args.since:%Y-%m-%d} to {args.until:%Y-%m-%d}"
-
-
-def _fetch(client: httpx.Client, owner: str, repo: str, args: argparse.Namespace) -> list[Commit]:
-    # One more than the summariser uses, so it can tell the user the range was truncated.
-    limit = MAX_COMMITS + 1
-    if args.base:
-        return fetch_commits_between(client, owner, repo, args.base, args.head or "HEAD", limit)
-    return fetch_commits(client, owner, repo, args.since, args.until, limit)
-
-
-def _github_error(e: httpx.HTTPStatusError, args: argparse.Namespace) -> str:
-    status = e.response.status_code
-    if status == 404:
-        what = "repository or ref" if args.base else "repository"
-        return f"GitHub couldn't find that {what} (404). Is it public and spelled correctly?"
-    if status in (403, 429):
-        return "GitHub rate limit reached. Set GITHUB_TOKEN in .env to raise it, or wait an hour."
-    return f"GitHub API error {status}: {e.response.text[:200]}"
+        if args.since or args.until:
+            parser.error("use either dates (--since/--until) or refs (--from/--to), not both")
+        try:
+            return RefRange(args.base, args.head or "HEAD")
+        except ValueError as e:
+            parser.error(str(e))
+    until = args.until or datetime.now(UTC)
+    if args.since is None:
+        return digest.last_days(now=until)
+    try:
+        return DateRange(args.since, until)
+    except ValueError:
+        parser.error("--since must be before --until")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -89,57 +84,46 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = build_parser()
     args = parser.parse_args(argv)
-
     try:
         owner, repo = parse_repo(args.repo)
     except ValueError as e:
         parser.error(str(e))
-    if args.head and not args.base:
-        parser.error("--to needs --from")
-    if args.base and (args.since or args.until):
-        parser.error("use either dates (--since/--until) or refs (--from/--to), not both")
-    if not args.base:
-        args.until = args.until or datetime.now(UTC)
-        args.since = args.since or args.until - timedelta(days=DEFAULT_DAYS)
-        if args.since >= args.until:
-            parser.error("--since must be before --until")
+    rng = _range_from_args(parser, args)
 
     def log(message: str) -> None:
         if not args.quiet:
             print(message, file=sys.stderr)
 
+    def fail(message: str) -> int:
+        print(f"error: {message}", file=sys.stderr)
+        return 1
+
     try:
         settings = load_settings()
     except RuntimeError as e:
-        print(f"error: {e}", file=sys.stderr)
-        return 1
+        return fail(str(e))
     model = args.model or settings.llm_model
 
     try:
         with make_client(settings.github_token) as gh:
-            commits = _fetch(gh, owner, repo, args)
+            commits = digest.fetch_range(gh, owner, repo, rng)
     except httpx.HTTPStatusError as e:
-        print(f"error: {_github_error(e, args)}", file=sys.stderr)
-        return 1
+        return fail(digest.github_error_message(e, rng))
     except httpx.TransportError as e:
-        print(f"error: couldn't reach GitHub: {e}", file=sys.stderr)
-        return 1
+        return fail(f"couldn't reach GitHub: {e}")
 
     if not commits:
-        print(f"No commits in {owner}/{repo} for {_describe_range(args)}.", file=sys.stderr)
-        return 1
-    log(f"Found {len(commits)} commits in {owner}/{repo} ({_describe_range(args)}).")
+        return fail(f"no commits in {owner}/{repo} for {rng.describe()}.")
+    log(f"Found {len(commits)} commits in {owner}/{repo} ({rng.describe()}).")
     log(f"Summarising with {model}…")
 
     llm = OpenAI(api_key=settings.llm_api_key, base_url=settings.llm_base_url)
     try:
         result = summarise(llm, f"{owner}/{repo}", commits, model=model)
     except SummaryError as e:
-        print(f"error: {e}", file=sys.stderr)
-        return 1
+        return fail(str(e))
     except APIError as e:
-        print(f"error: LLM API request failed: {e}", file=sys.stderr)
-        return 1
+        return fail(f"LLM API request failed: {e}")
 
     if result.truncated:
         log(f"Note: only the newest {result.commits_used} commits were summarised.")

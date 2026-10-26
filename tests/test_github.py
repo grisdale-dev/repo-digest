@@ -26,7 +26,9 @@ def test_parse_repo_accepts_common_forms(value: str) -> None:
     assert parse_repo(value) == ("anthropics", "anthropic-sdk-python")
 
 
-@pytest.mark.parametrize("value", ["", "just-a-name", "https://gitlab.com/a/b", "a/b/c"])
+@pytest.mark.parametrize(
+    "value", ["", "just-a-name", "https://gitlab.com/a/b", "a/b/c", "a/b?x=1", 'a"><x/b']
+)
 def test_parse_repo_rejects_invalid_input(value: str) -> None:
     with pytest.raises(ValueError):
         parse_repo(value)

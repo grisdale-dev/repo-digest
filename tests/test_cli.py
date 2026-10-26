@@ -6,7 +6,7 @@ from typing import Any
 import httpx
 import pytest
 
-from repo_digest import cli
+from repo_digest import cli, digest
 from repo_digest.config import Settings
 from repo_digest.github import Commit
 from repo_digest.notes import Change, ReleaseNotes
@@ -48,8 +48,8 @@ def calls(monkeypatch: pytest.MonkeyPatch) -> dict[str, Any]:
         recorded["summarise"] = (repo, list(commits), model)
         return Summary(NOTES, Usage(100, 20), attempts=1, commits_used=1, truncated=False)
 
-    monkeypatch.setattr(cli, "fetch_commits", fake_fetch)
-    monkeypatch.setattr(cli, "fetch_commits_between", fake_between)
+    monkeypatch.setattr(digest, "fetch_commits", fake_fetch)
+    monkeypatch.setattr(digest, "fetch_commits_between", fake_between)
     monkeypatch.setattr(cli, "summarise", fake_summarise)
     return recorded
 
@@ -61,7 +61,7 @@ def test_defaults_to_last_30_days_and_prints_markdown(
 
     owner, repo, since, until = calls["fetch"]
     assert (owner, repo) == ("octo", "demo")
-    assert until - since == timedelta(days=cli.DEFAULT_DAYS)
+    assert until - since == timedelta(days=digest.DEFAULT_DAYS)
     assert calls["summarise"][2] == "test-model"
     out = capsys.readouterr()
     assert out.out.startswith("Adds X ⚠️.")
@@ -115,7 +115,7 @@ def test_github_404_is_a_friendly_error(
         request = httpx.Request("GET", "https://api.github.com/x")
         raise httpx.HTTPStatusError("nf", request=request, response=httpx.Response(404))
 
-    monkeypatch.setattr(cli, "fetch_commits", not_found)
+    monkeypatch.setattr(digest, "fetch_commits", not_found)
     assert cli.main(["octo/missing"]) == 1
     assert "couldn't find that repository" in capsys.readouterr().err
 
@@ -123,7 +123,7 @@ def test_github_404_is_a_friendly_error(
 def test_no_commits(
     calls: dict[str, Any], monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
-    monkeypatch.setattr(cli, "fetch_commits", lambda *a, **k: [])
+    monkeypatch.setattr(digest, "fetch_commits", lambda *a, **k: [])
     assert cli.main(["octo/demo"]) == 1
-    assert "No commits" in capsys.readouterr().err
+    assert "no commits" in capsys.readouterr().err
     assert "summarise" not in calls

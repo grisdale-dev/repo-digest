@@ -9,7 +9,7 @@ Turn a GitHub repository's history into readable release notes: features, fixes 
 - [x] **1. GitHub client:** parse repo input, fetch commits for a date range (`src/repo_digest/github.py`)
 - [x] **2. Summariser:** commits → structured release notes with an LLM + Pydantic, plus validation and retries
 - [x] **3. CLI:** `repo-digest owner/repo --since 2026-09-01` prints Markdown
-- [ ] **4. Web API + page:** FastAPI endpoint and a simple front end
+- [x] **4. Web API + page:** FastAPI endpoint and a simple front end
 - [ ] **5. Guardrails:** per-visitor rate limit, result cache, daily token budget
 - [ ] **6. Deploy:** live public URL
 - [ ] **7. Evaluate:** compare against real human-written release notes for a few projects
@@ -27,6 +27,14 @@ uv run repo-digest astral-sh/uv --from 0.9.0 -o NOTES.md # tag to latest, writte
 ```
 
 Release notes go to stdout as Markdown. Progress and token usage go to stderr, so piping and redirecting work.
+
+### Web app
+
+```sh
+uv run repo-digest-web   # then open http://127.0.0.1:8000
+```
+
+The page posts to `POST /api/digest` (`{"repo": "owner/repo", "base": "v1.0", "head": "v1.1"}` or `"since"`/`"until"` dates). Interactive API docs are at `/docs`. All model-written text is HTML-escaped on the server before it reaches the page.
 
 ## Development
 

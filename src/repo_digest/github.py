@@ -1,5 +1,6 @@
 """Fetching commit history from the GitHub REST API."""
 
+import re
 from datetime import datetime
 from typing import Any
 
@@ -9,6 +10,8 @@ from pydantic import BaseModel
 GITHUB_API = "https://api.github.com"
 GITHUB_WEB = "https://github.com/"
 PER_PAGE = 100
+# Characters GitHub allows in owner and repository names.
+_NAME = re.compile(r"[A-Za-z0-9_.-]+")
 
 
 class Commit(BaseModel):
@@ -28,7 +31,7 @@ def parse_repo(value: str) -> tuple[str, str]:
     """
     path = value.strip().removeprefix(GITHUB_WEB).removesuffix(".git").strip("/")
     parts = path.split("/")
-    if len(parts) != 2 or not all(parts) or ":" in path:
+    if len(parts) != 2 or not all(_NAME.fullmatch(p) for p in parts):
         raise ValueError(f"Expected 'owner/repo' or a github.com URL, got {value!r}")
     owner, repo = parts
     return owner, repo
