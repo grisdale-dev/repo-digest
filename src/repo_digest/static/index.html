@@ -173,7 +173,7 @@ form.addEventListener("submit", async (event) => {
     $("result-title").textContent = `${data.repo} · ${data.range}`;
     const tokens = (data.usage.input_tokens + data.usage.output_tokens).toLocaleString();
     $("meta").textContent = `${data.commits_used} commits${data.truncated ? " (newest only)" : ""}`
-      + ` · ${tokens} tokens · ${data.model}`;
+      + (data.cached ? " · cached result" : ` · ${tokens} tokens · ${data.model}`);
     $("notes").innerHTML = data.html; // server-rendered; all model text is HTML-escaped
     $("result").hidden = false;
     show($("status"), "");

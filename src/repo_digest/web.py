@@ -3,6 +3,7 @@
 Run locally with `uv run repo-digest-web` and open http://127.0.0.1:8000.
 """
 
+import math
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from datetime import UTC, date, datetime, time, timedelta
@@ -18,6 +19,7 @@ from repo_digest import digest
 from repo_digest.config import Settings, load_settings
 from repo_digest.digest import CommitRange, DateRange, RefRange
 from repo_digest.github import make_client, parse_repo
+from repo_digest.guards import RateLimiter, TokenBudget, TTLCache
 from repo_digest.notes import ReleaseNotes
 from repo_digest.summarise import SummaryError, summarise
 
@@ -37,6 +39,7 @@ class TokenUsage(BaseModel):
 
 class DigestResponse(BaseModel):
     repo: str
+    cached: bool = False
     range: str
     model: str
     commits_used: int
@@ -66,12 +69,39 @@ def _to_range(body: DigestRequest) -> CommitRange:
     return DateRange(_midnight(body.since), until)
 
 
+CacheKey = tuple[str, str | None, str | None, str | None, str | None, str]
+
+
+def _cache_key(owner: str, repo: str, body: DigestRequest, model: str) -> CacheKey:
+    return (
+        f"{owner}/{repo}".lower(),
+        body.since.isoformat() if body.since else None,
+        body.until.isoformat() if body.until else None,
+        body.base.strip() if body.base else None,
+        body.head.strip() if body.head else None,
+        model,
+    )
+
+
+def _client_id(request: Request, trust_proxy_headers: bool) -> str:
+    if trust_proxy_headers:
+        forwarded = request.headers.get("x-forwarded-for")
+        if forwarded:
+            # Use the last entry: it's the one our proxy added. Earlier entries come from the
+            # client and can be forged to dodge the rate limit.
+            return forwarded.split(",")[-1].strip()
+    return request.client.host if request.client else "unknown"
+
+
 def create_app(settings: Settings | None = None) -> FastAPI:
     @asynccontextmanager
     async def lifespan(app: FastAPI) -> AsyncIterator[None]:
         s = settings or load_settings()
         app.state.settings = s
         app.state.llm = OpenAI(api_key=s.llm_api_key, base_url=s.llm_base_url)
+        app.state.limiter = RateLimiter(s.rate_limit_requests, s.rate_limit_window_seconds)
+        app.state.cache = TTLCache[CacheKey, DigestResponse](s.cache_ttl_seconds)
+        app.state.budget = TokenBudget(s.daily_token_limit)
         with make_client(s.github_token) as gh:
             app.state.github = gh
             yield
@@ -98,6 +128,30 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         except ValueError as e:
             raise HTTPException(400, str(e)) from None
 
+        settings: Settings = state.settings
+        model = settings.llm_model
+        key = _cache_key(owner, repo, body, model)
+        cache: TTLCache[CacheKey, DigestResponse] = state.cache
+        if cached := cache.get(key):
+            return cached.model_copy(update={"cached": True})
+
+        retry_after = state.limiter.acquire(_client_id(request, settings.trust_proxy_headers))
+        if retry_after is not None:
+            minutes = max(1, math.ceil(retry_after / 60))
+            raise HTTPException(
+                429,
+                f"You've reached the limit of {settings.rate_limit_requests} digests per "
+                f"{settings.rate_limit_window_seconds // 60} minutes. "
+                f"Try again in {minutes} minute{'s' if minutes != 1 else ''}.",
+                headers={"Retry-After": str(math.ceil(retry_after))},
+            )
+        if not state.budget.has_room():
+            raise HTTPException(
+                503,
+                "Today's demo budget is used up. Try again tomorrow (UTC), "
+                "or run repo-digest yourself. It's open source.",
+            )
+
         try:
             commits = digest.fetch_range(state.github, owner, repo, rng)
         except httpx.HTTPStatusError as e:
@@ -108,15 +162,17 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         if not commits:
             raise HTTPException(404, f"No commits in {owner}/{repo} for {rng.describe()}.")
 
-        model: str = state.settings.llm_model
         try:
             result = summarise(state.llm, f"{owner}/{repo}", commits, model=model)
-        except SummaryError:
+        except SummaryError as e:
+            state.budget.charge(e.usage.total_tokens)
             raise HTTPException(502, "The model didn't produce usable notes. Try again.") from None
         except APIError:
             raise HTTPException(503, "The language model is unavailable right now.") from None
 
-        return DigestResponse(
+        state.budget.charge(result.usage.total_tokens)
+
+        response = DigestResponse(
             repo=f"{owner}/{repo}",
             range=rng.describe(),
             model=model,
@@ -129,6 +185,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
                 input_tokens=result.usage.input_tokens, output_tokens=result.usage.output_tokens
             ),
         )
+        cache.set(key, response)
+        return response
 
     return app
 

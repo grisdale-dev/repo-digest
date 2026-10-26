@@ -52,10 +52,6 @@ Respond with JSON only, in exactly this format:
 """
 
 
-class SummaryError(Exception):
-    """The model didn't produce valid release notes within the allowed attempts."""
-
-
 @dataclass(frozen=True)
 class Usage:
     input_tokens: int = 0
@@ -69,6 +65,14 @@ class Usage:
         return Usage(
             self.input_tokens + other.input_tokens, self.output_tokens + other.output_tokens
         )
+
+
+class SummaryError(Exception):
+    """The model didn't produce valid release notes within the allowed attempts."""
+
+    def __init__(self, message: str, usage: Usage | None = None) -> None:
+        super().__init__(message)
+        self.usage = usage or Usage()  # tokens spent on the failed attempts
 
 
 @dataclass(frozen=True)
@@ -159,4 +163,4 @@ def summarise(
             },
         ]
 
-    raise SummaryError(f"No valid release notes after {max_attempts} attempts")
+    raise SummaryError(f"No valid release notes after {max_attempts} attempts", usage)

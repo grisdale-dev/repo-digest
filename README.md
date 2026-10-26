@@ -10,7 +10,7 @@ Turn a GitHub repository's history into readable release notes: features, fixes 
 - [x] **2. Summariser:** commits → structured release notes with an LLM + Pydantic, plus validation and retries
 - [x] **3. CLI:** `repo-digest owner/repo --since 2026-09-01` prints Markdown
 - [x] **4. Web API + page:** FastAPI endpoint and a simple front end
-- [ ] **5. Guardrails:** per-visitor rate limit, result cache, daily token budget
+- [x] **5. Guardrails:** per-visitor rate limit, result cache, daily token budget
 - [ ] **6. Deploy:** live public URL
 - [ ] **7. Evaluate:** compare against real human-written release notes for a few projects
 - [ ] **8. Publish:** PyPI package and write-up
@@ -35,6 +35,16 @@ uv run repo-digest-web   # then open http://127.0.0.1:8000
 ```
 
 The page posts to `POST /api/digest` (`{"repo": "owner/repo", "base": "v1.0", "head": "v1.1"}` or `"since"`/`"until"` dates). Interactive API docs are at `/docs`. All model-written text is HTML-escaped on the server before it reaches the page.
+
+The public demo is protected by three in-memory guards (configured in `.env`, see `.env.example`):
+
+| Guard | Default | What happens |
+|---|---|---|
+| Cache | 1 hour | Identical requests are served from cache: free, instant, not rate limited |
+| Rate limit | 10 per visitor per hour | `429` with `Retry-After` |
+| Daily token budget | 500k tokens (UTC day) | `503` until midnight UTC; failed attempts count too |
+
+State resets on restart. That's acceptable because the LLM account is prepaid, so the most the demo can ever spend is the balance.
 
 ## Development
 

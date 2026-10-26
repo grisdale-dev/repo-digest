@@ -148,3 +148,79 @@ def test_llm_errors_are_mapped(
     monkeypatch.setattr(web, "summarise", failing)
     response = client.post("/api/digest", json={"repo": "octo/demo"})
     assert response.status_code == expected
+
+
+def test_repeat_requests_are_served_from_cache(client: TestClient, calls: dict[str, Any]) -> None:
+    first = client.post("/api/digest", json={"repo": "octo/demo", "base": "v1"}).json()
+    calls.pop("summarise")
+    second = client.post("/api/digest", json={"repo": "OCTO/demo", "base": "v1"}).json()
+
+    assert first["cached"] is False
+    assert second["cached"] is True
+    assert second["markdown"] == first["markdown"]
+    assert "summarise" not in calls  # no second LLM call
+
+
+def _app_with(**overrides: Any) -> TestClient:
+    settings = Settings("key", "https://llm.test", "test-model", None, **overrides)
+    return TestClient(web.create_app(settings))
+
+
+def test_rate_limit_returns_429_with_retry_after(calls: dict[str, Any]) -> None:
+    with _app_with(daily_token_limit=1000, rate_limit_requests=2) as c:
+        for tag in ("v1", "v2"):
+            assert c.post("/api/digest", json={"repo": "octo/demo", "base": tag}).status_code == 200
+        response = c.post("/api/digest", json={"repo": "octo/demo", "base": "v3"})
+        # Cached results don't count towards the limit.
+        cached = c.post("/api/digest", json={"repo": "octo/demo", "base": "v1"})
+
+    assert response.status_code == 429
+    assert int(response.headers["Retry-After"]) > 0
+    assert "limit of 2 digests" in response.json()["detail"]
+    assert cached.status_code == 200 and cached.json()["cached"] is True
+
+
+def test_rate_limit_uses_last_forwarded_ip_when_trusted(calls: dict[str, Any]) -> None:
+    with _app_with(daily_token_limit=1000, rate_limit_requests=1, trust_proxy_headers=True) as c:
+        a = c.post(
+            "/api/digest",
+            json={"repo": "octo/demo", "base": "v1"},
+            headers={"X-Forwarded-For": "6.6.6.6, 1.1.1.1"},
+        )
+        # Forging a different first entry doesn't escape the limit for 1.1.1.1...
+        forged = c.post(
+            "/api/digest",
+            json={"repo": "octo/demo", "base": "v2"},
+            headers={"X-Forwarded-For": "7.7.7.7, 1.1.1.1"},
+        )
+        # ...but a genuinely different visitor gets their own allowance.
+        other = c.post(
+            "/api/digest",
+            json={"repo": "octo/demo", "base": "v3"},
+            headers={"X-Forwarded-For": "2.2.2.2"},
+        )
+    assert (a.status_code, forged.status_code, other.status_code) == (200, 429, 200)
+
+
+def test_budget_is_charged_and_enforced(calls: dict[str, Any]) -> None:
+    # Each fake summary costs 120 tokens; with a 200-token budget the third request is refused.
+    with _app_with(daily_token_limit=200) as c:
+        codes = [
+            c.post("/api/digest", json={"repo": "octo/demo", "base": tag}).status_code
+            for tag in ("v1", "v2", "v3")
+        ]
+        detail = c.post("/api/digest", json={"repo": "octo/demo", "base": "v4"}).json()["detail"]
+    assert codes == [200, 200, 503]
+    assert "budget" in detail
+
+
+def test_failed_summaries_still_charge_the_budget(
+    calls: dict[str, Any], monkeypatch: pytest.MonkeyPatch
+) -> None:
+    def failing(*_args: object, **_kwargs: object) -> Summary:
+        raise SummaryError("bad", Usage(150, 50))
+
+    monkeypatch.setattr(web, "summarise", failing)
+    with _app_with(daily_token_limit=200) as c:
+        assert c.post("/api/digest", json={"repo": "octo/demo"}).status_code == 502
+        assert c.post("/api/digest", json={"repo": "octo/demo", "base": "v1"}).status_code == 503

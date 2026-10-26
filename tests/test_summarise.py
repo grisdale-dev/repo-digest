@@ -135,9 +135,10 @@ def test_retries_on_empty_content(client: OpenAI) -> None:
 @respx.mock
 def test_gives_up_after_max_attempts(client: OpenAI) -> None:
     route = respx.post(ENDPOINT).mock(return_value=completion("not json"))
-    with pytest.raises(SummaryError):
+    with pytest.raises(SummaryError) as exc:
         summarise(client, "octo/demo", COMMITS, model="test-model", max_attempts=3)
     assert route.call_count == 3
+    assert exc.value.usage.total_tokens == 360  # failed attempts still cost tokens
 
 
 def test_rejects_empty_commit_list(client: OpenAI) -> None:
